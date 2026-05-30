@@ -1,0 +1,1892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JavaScript — Complete Interview Notes</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14; --surface: #151820; --surface2: #1c2030;
+    --border: #252a3a; --border2: #2e3550;
+    --green: #00d084; --green-dim: #00d08422; --green-text: #00ff9d;
+    --amber: #f5a623; --amber-dim: #f5a62318;
+    --blue: #4a9eff; --blue-dim: #4a9eff18;
+    --red: #ff5c5c; --red-dim: #ff5c5c18;
+    --purple: #a78bfa; --purple-dim: #a78bfa18;
+    --cyan: #22d3ee; --cyan-dim: #22d3ee18;
+    --yellow: #f9e64f; --yellow-dim: #f9e64f18;
+    --text: #e4e8f0; --text2: #8b92a8; --text3: #555e78;
+    --mono: 'IBM Plex Mono', monospace; --sans: 'IBM Plex Sans', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; }
+  .wrapper { display: flex; min-height: 100vh; }
+
+  nav { width: 260px; min-width: 260px; background: var(--surface); border-right: 1px solid var(--border); padding: 2rem 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--border2) transparent; }
+  nav .logo { padding: 0 1.5rem 1.5rem; border-bottom: 1px solid var(--border); margin-bottom: 1rem; }
+  nav .logo h1 { font-size: 13px; font-family: var(--mono); color: var(--yellow); font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+  nav .logo p { font-size: 11px; color: var(--text3); font-family: var(--mono); margin-top: 3px; }
+  nav ul { list-style: none; padding: 0 0.75rem; }
+  nav ul li a { display: flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 6px; text-decoration: none; font-size: 13px; color: var(--text2); transition: all 0.15s; font-family: var(--mono); }
+  nav ul li a:hover { background: var(--surface2); color: var(--text); }
+  nav ul li a .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border2); flex-shrink: 0; }
+  nav ul li a.active { background: var(--yellow-dim); color: var(--yellow); }
+  nav ul li a.active .dot { background: var(--yellow); }
+  nav .nav-group { font-size: 10px; font-family: var(--mono); color: var(--text3); text-transform: uppercase; letter-spacing: 0.12em; padding: 1rem 1.5rem 0.4rem; }
+
+  main { flex: 1; padding: 3rem 4rem; max-width: 960px; }
+  section { margin-bottom: 5rem; scroll-margin-top: 2rem; }
+
+  .section-tag { display: inline-block; font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; padding: 3px 10px; border-radius: 4px; margin-bottom: 0.75rem; }
+  .tag-green  { background: var(--green-dim);  color: var(--green-text); }
+  .tag-amber  { background: var(--amber-dim);  color: var(--amber); }
+  .tag-blue   { background: var(--blue-dim);   color: var(--blue); }
+  .tag-red    { background: var(--red-dim);    color: var(--red); }
+  .tag-purple { background: var(--purple-dim); color: var(--purple); }
+  .tag-cyan   { background: var(--cyan-dim);   color: var(--cyan); }
+  .tag-yellow { background: var(--yellow-dim); color: var(--yellow); }
+
+  h2 { font-size: 26px; font-weight: 600; color: var(--text); margin-bottom: 0.25rem; letter-spacing: -0.02em; }
+  h3 { font-size: 16px; font-weight: 500; color: var(--text); margin: 1.75rem 0 0.75rem; display: flex; align-items: center; gap: 8px; }
+  h3::before { content: ''; display: block; width: 3px; height: 16px; background: var(--yellow); border-radius: 2px; flex-shrink: 0; }
+  .section-intro { color: var(--text2); font-size: 14px; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem 1.5rem; margin-bottom: 1rem; }
+  .card-title { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 0.6rem; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .badge { font-size: 10px; font-family: var(--mono); padding: 2px 7px; border-radius: 4px; }
+  .badge-g { background: var(--green-dim);  color: var(--green-text); }
+  .badge-a { background: var(--amber-dim);  color: var(--amber); }
+  .badge-r { background: var(--red-dim);    color: var(--red); }
+  .badge-b { background: var(--blue-dim);   color: var(--blue); }
+  .badge-p { background: var(--purple-dim); color: var(--purple); }
+  .badge-c { background: var(--cyan-dim);   color: var(--cyan); }
+  .badge-y { background: var(--yellow-dim); color: var(--yellow); }
+
+  ul.notes { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 5px; }
+  ul.notes li { font-size: 13.5px; color: var(--text2); padding-left: 16px; position: relative; line-height: 1.65; }
+  ul.notes li::before { content: '→'; position: absolute; left: 0; color: var(--text3); font-size: 11px; top: 3px; }
+  ul.notes li strong { color: var(--text); font-weight: 500; }
+  ul.notes li code { font-family: var(--mono); font-size: 12px; background: var(--surface2); padding: 1px 5px; border-radius: 3px; color: var(--yellow); }
+
+  .code-wrap { background: var(--surface2); border: 1px solid var(--border2); border-radius: 8px; margin: 1rem 0; overflow: hidden; }
+  .code-label { font-family: var(--mono); font-size: 10px; color: var(--text3); padding: 8px 14px 6px; border-bottom: 1px solid var(--border); letter-spacing: 0.08em; text-transform: uppercase; }
+  pre { font-family: var(--mono); font-size: 12.5px; color: #c9d1e0; padding: 1rem 1.25rem; overflow-x: auto; line-height: 1.7; white-space: pre; }
+  .kw  { color: #569cd6; }
+  .fn  { color: #dcdcaa; }
+  .str { color: #ce9178; }
+  .num { color: #b5cea8; }
+  .cmt { color: #6a9955; font-style: italic; }
+  .op  { color: #4ec9b0; }
+  .prop{ color: #9cdcfe; }
+  .kw2 { color: #c586c0; }
+
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 1rem 0; }
+  .compare-table th { text-align: left; padding: 10px 14px; font-family: var(--mono); font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; border-bottom: 1px solid var(--border2); background: var(--surface2); }
+  .compare-table td { padding: 9px 14px; color: var(--text2); border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare-table td:first-child { color: var(--text); font-weight: 500; }
+  .compare-table td code { font-family: var(--mono); font-size: 11.5px; background: var(--surface2); padding: 1px 5px; border-radius: 3px; color: var(--yellow); }
+  .compare-table tr:last-child td { border-bottom: none; }
+
+  .highlight-box { border-left: 3px solid var(--amber); background: var(--amber-dim); border-radius: 0 8px 8px 0; padding: 10px 16px; font-size: 13px; color: var(--amber); margin: 1rem 0; line-height: 1.6; }
+  .highlight-box.blue   { border-color: var(--blue);   background: var(--blue-dim);   color: var(--blue); }
+  .highlight-box.green  { border-color: var(--green);  background: var(--green-dim);  color: var(--green-text); }
+  .highlight-box.purple { border-color: var(--purple); background: var(--purple-dim); color: var(--purple); }
+  .highlight-box.cyan   { border-color: var(--cyan);   background: var(--cyan-dim);   color: var(--cyan); }
+  .highlight-box.red    { border-color: var(--red);    background: var(--red-dim);    color: var(--red); }
+  .highlight-box.yellow { border-color: var(--yellow); background: var(--yellow-dim); color: var(--yellow); }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+
+  .hero { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 2rem 2.5rem; margin-bottom: 3rem; display: flex; align-items: flex-start; gap: 2rem; }
+  .hero-icon { font-size: 40px; line-height: 1; flex-shrink: 0; }
+  .hero h1 { font-size: 32px; font-weight: 600; letter-spacing: -0.03em; color: var(--text); margin-bottom: 6px; }
+  .hero h1 span { color: var(--yellow); }
+  .hero p { font-size: 14px; color: var(--text2); line-height: 1.6; max-width: 520px; }
+  .hero-meta { display: flex; gap: 12px; margin-top: 12px; flex-wrap: wrap; }
+  .hero-meta span { font-family: var(--mono); font-size: 11px; color: var(--text3); background: var(--surface2); padding: 4px 10px; border-radius: 4px; border: 1px solid var(--border); }
+
+  .flow { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin: 1rem 0; }
+  .flow-box { background: var(--surface2); border: 1px solid var(--border2); border-radius: 6px; padding: 6px 12px; font-family: var(--mono); font-size: 12px; color: var(--yellow); }
+  .flow-arrow { color: var(--text3); font-size: 13px; }
+
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+  @media (max-width: 700px) {
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    main { padding: 2rem 1.5rem; }
+    nav { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+<!-- SIDEBAR -->
+<nav>
+  <div class="logo">
+    <h1>JavaScript Notes</h1>
+    <p>// interview prep 2026</p>
+  </div>
+
+  <div class="nav-group">Foundations</div>
+  <ul>
+    <li><a href="#intro"><span class="dot"></span>What is JavaScript?</a></li>
+    <li><a href="#variables"><span class="dot"></span>Variables: var, let, const</a></li>
+    <li><a href="#datatypes"><span class="dot"></span>Data Types</a></li>
+    <li><a href="#scope"><span class="dot"></span>Scope</a></li>
+    <li><a href="#hoisting"><span class="dot"></span>Hoisting</a></li>
+    <li><a href="#operators"><span class="dot"></span>Operators</a></li>
+    <li><a href="#conditionals"><span class="dot"></span>Conditionals</a></li>
+    <li><a href="#loops"><span class="dot"></span>Loops</a></li>
+  </ul>
+
+  <div class="nav-group">Functions</div>
+  <ul>
+    <li><a href="#functions"><span class="dot"></span>Types of Functions</a></li>
+    <li><a href="#this"><span class="dot"></span>this keyword</a></li>
+    <li><a href="#closures"><span class="dot"></span>Closures</a></li>
+    <li><a href="#call-apply-bind"><span class="dot"></span>call, apply, bind</a></li>
+    <li><a href="#currying"><span class="dot"></span>Currying</a></li>
+    <li><a href="#pure"><span class="dot"></span>Pure vs Impure Functions</a></li>
+  </ul>
+
+  <div class="nav-group">ES6+ Features</div>
+  <ul>
+    <li><a href="#es6"><span class="dot"></span>ES6 Overview</a></li>
+    <li><a href="#destructuring"><span class="dot"></span>Destructuring</a></li>
+    <li><a href="#spread-rest"><span class="dot"></span>Spread &amp; Rest</a></li>
+    <li><a href="#modules"><span class="dot"></span>Modules (import/export)</a></li>
+  </ul>
+
+  <div class="nav-group">Async JavaScript</div>
+  <ul>
+    <li><a href="#async-intro"><span class="dot"></span>Sync vs Async</a></li>
+    <li><a href="#callbacks"><span class="dot"></span>Callbacks &amp; HOF</a></li>
+    <li><a href="#promises"><span class="dot"></span>Promises</a></li>
+    <li><a href="#async-await"><span class="dot"></span>async / await</a></li>
+    <li><a href="#event-loop"><span class="dot"></span>Event Loop</a></li>
+  </ul>
+
+  <div class="nav-group">Arrays &amp; Strings</div>
+  <ul>
+    <li><a href="#arrays"><span class="dot"></span>Array Methods</a></li>
+    <li><a href="#array-hof"><span class="dot"></span>map, filter, reduce</a></li>
+    <li><a href="#strings"><span class="dot"></span>String Methods</a></li>
+  </ul>
+
+  <div class="nav-group">DOM &amp; BOM</div>
+  <ul>
+    <li><a href="#dom"><span class="dot"></span>DOM Manipulation</a></li>
+    <li><a href="#events"><span class="dot"></span>Events &amp; Event Object</a></li>
+    <li><a href="#bubbling"><span class="dot"></span>Bubbling &amp; Capturing</a></li>
+    <li><a href="#bom"><span class="dot"></span>BOM</a></li>
+  </ul>
+
+  <div class="nav-group">Advanced</div>
+  <ul>
+    <li><a href="#prototype"><span class="dot"></span>Prototype &amp; Inheritance</a></li>
+    <li><a href="#error"><span class="dot"></span>Error Handling</a></li>
+    <li><a href="#storage"><span class="dot"></span>Storage: Local/Session/Cookie</a></li>
+    <li><a href="#json"><span class="dot"></span>JSON</a></li>
+    <li><a href="#timers"><span class="dot"></span>setTimeout &amp; setInterval</a></li>
+  </ul>
+
+  <div class="nav-group">Interview</div>
+  <ul>
+    <li><a href="#hotqs"><span class="dot"></span>Hot Interview Qs</a></li>
+  </ul>
+</nav>
+
+<!-- MAIN -->
+<main>
+
+  <div class="hero">
+    <div class="hero-icon">🟨</div>
+    <div>
+      <h1><span>JavaScript</span> Complete Notes</h1>
+      <p>Full coverage from variables and data types to closures, promises, async/await, DOM manipulation, ES6+ features, prototypes, and all the most-asked interview questions — with real code examples.</p>
+      <div class="hero-meta">
+        <span>ES6+</span><span>All levels</span><span>Updated 2026</span><span>Interview-focused</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 01 ══ -->
+  <section id="intro">
+    <div class="section-tag tag-yellow">01 — Foundations</div>
+    <h2>What is JavaScript?</h2>
+    <p class="section-intro">A high-level, interpreted scripting language used to create dynamic and interactive content on websites — the only language that runs natively in the browser.</p>
+
+    <div class="card">
+      <div class="card-title">Key Characteristics</div>
+      <ul class="notes">
+        <li><strong>High-level</strong> — abstracts away memory management; easy to write</li>
+        <li><strong>Interpreted</strong> — executed line by line at runtime (no manual compilation)</li>
+        <li><strong>Single-threaded</strong> — one task at a time using a single call stack</li>
+        <li><strong>Dynamically typed</strong> — variable types are determined at runtime, not declared</li>
+        <li><strong>Event-driven</strong> — responds to user actions, timers, and network responses</li>
+      </ul>
+    </div>
+
+    <h3>Common Uses</h3>
+    <div class="grid-2">
+      <div class="card">
+        <ul class="notes">
+          <li><strong>Frontend</strong> — dynamic UI with HTML &amp; CSS (React, Vue, Angular)</li>
+          <li><strong>Backend</strong> — server-side with Node.js</li>
+          <li><strong>Mobile apps</strong> — React Native, Ionic</li>
+        </ul>
+      </div>
+      <div class="card">
+        <ul class="notes">
+          <li><strong>Desktop apps</strong> — Electron (VS Code is built with it)</li>
+          <li><strong>Game development</strong>, AI/ML (TensorFlow.js), IoT</li>
+          <li><strong>API integration</strong>, automation, browser extensions</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>JavaScript Engine</h3>
+    <div class="card">
+      <ul class="notes">
+        <li>A JS engine reads and runs JavaScript code — converts it to machine code</li>
+        <li><strong>Chrome / Node.js</strong> → <code>V8</code></li>
+        <li><strong>Firefox</strong> → <code>SpiderMonkey</code></li>
+        <li><strong>Safari</strong> → <code>JavaScriptCore</code></li>
+        <li><strong>Edge</strong> → <code>Chakra</code> (old) → now uses V8</li>
+      </ul>
+    </div>
+
+    <h3>Client-Side vs Server-Side</h3>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Client-Side (Frontend)</div>
+        <ul class="notes">
+          <li>Runs in the <strong>user's browser</strong></li>
+          <li>Handles UI, interactions, animations</li>
+          <li>Example: clicking a button shows a dropdown — JS handles it without contacting the server</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Server-Side (Backend)</div>
+        <ul class="notes">
+          <li>Runs on a <strong>remote server</strong> using Node.js</li>
+          <li>Handles data processing, database access, authentication</li>
+          <li>Example: login form → server checks password in database</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Java vs JavaScript</h3>
+    <table class="compare-table">
+      <thead><tr><th>Feature</th><th>Java</th><th>JavaScript</th></tr></thead>
+      <tbody>
+        <tr><td>Type</td><td>Programming language</td><td>Scripting language</td></tr>
+        <tr><td>Primary Use</td><td>Backend, Android apps</td><td>Web frontend + backend (Node.js)</td></tr>
+        <tr><td>Execution</td><td>Runs on JVM</td><td>Runs in browser or Node.js</td></tr>
+        <tr><td>Compilation</td><td>Compiled to bytecode</td><td>Interpreted at runtime</td></tr>
+        <tr><td>Typing</td><td>Statically typed</td><td>Dynamically typed</td></tr>
+        <tr><td>Relationship</td><td colspan="2">None — completely different languages (similar name only for marketing)</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ══ 02 ══ -->
+  <section id="variables">
+    <div class="section-tag tag-yellow">02 — Variables</div>
+    <h2>Variables: var, let, const</h2>
+    <p class="section-intro">Three ways to declare variables in JavaScript — know the differences, scoping rules, and when to use each.</p>
+
+    <table class="compare-table">
+      <thead><tr><th>Keyword</th><th>Re-assignable</th><th>Re-declarable</th><th>Scope</th><th>Hoisted</th></tr></thead>
+      <tbody>
+        <tr><td><code>var</code></td><td>✅ Yes</td><td>✅ Yes</td><td>Function scope</td><td>Yes (as <code>undefined</code>)</td></tr>
+        <tr><td><code>let</code></td><td>✅ Yes</td><td>❌ No</td><td>Block scope</td><td>Yes (but not initialised — TDZ)</td></tr>
+        <tr><td><code>const</code></td><td>❌ No</td><td>❌ No</td><td>Block scope</td><td>Yes (but not initialised — TDZ)</td></tr>
+      </tbody>
+    </table>
+
+    <div class="code-wrap">
+      <div class="code-label">javascript — var, let, const</div>
+      <pre><span class="cmt">// VAR — function-scoped, can be re-declared</span>
+<span class="kw">var</span> <span class="prop">name</span> = <span class="str">"John"</span>;
+<span class="prop">name</span> = <span class="str">"Doe"</span>;         <span class="cmt">// ✅ Changed</span>
+<span class="kw">var</span> <span class="prop">name</span> = <span class="str">"Jane"</span>;    <span class="cmt">// ✅ Re-declared (problematic!)</span>
+
+<span class="cmt">// LET — block-scoped, cannot re-declare</span>
+<span class="kw">let</span> <span class="prop">age</span> = <span class="num">25</span>;
+<span class="prop">age</span> = <span class="num">30</span>;             <span class="cmt">// ✅ Changed</span>
+<span class="cmt">// let age = 35;   → ❌ Error: Cannot re-declare</span>
+
+<span class="cmt">// CONST — block-scoped, cannot change</span>
+<span class="kw">const</span> <span class="prop">PI</span> = <span class="num">3.14</span>;
+<span class="cmt">// PI = 3.1415;    → ❌ Error: Cannot assign to const
+// BUT: const objects/arrays can be mutated (not re-assigned)</span>
+<span class="kw">const</span> <span class="prop">user</span> = { <span class="prop">name</span>: <span class="str">"Alice"</span> };
+<span class="prop">user</span>.<span class="prop">name</span> = <span class="str">"Bob"</span>;    <span class="cmt">// ✅ Allowed — mutating the object</span>
+<span class="cmt">// user = {};       → ❌ Error — re-assigning the variable</span></pre>
+    </div>
+
+    <div class="highlight-box yellow">💡 Best practice: Always use <code>const</code> by default. Use <code>let</code> when you need to reassign. Never use <code>var</code> in modern JavaScript — it causes hoisting and scoping bugs.</div>
+  </section>
+
+  <!-- ══ 03 ══ -->
+  <section id="datatypes">
+    <div class="section-tag tag-yellow">03 — Data Types</div>
+    <h2>Data Types</h2>
+    <p class="section-intro">JavaScript has 8 data types — 7 primitive and 1 non-primitive (object).</p>
+
+    <h3>Primitive Types (7) — stored by value</h3>
+    <div class="code-wrap">
+      <div class="code-label">javascript — all 7 primitive types</div>
+      <pre><span class="kw">let</span> <span class="prop">name</span>      = <span class="str">"John"</span>;               <span class="cmt">// String</span>
+<span class="kw">let</span> <span class="prop">age</span>       = <span class="num">25</span>;                    <span class="cmt">// Number (int & float)</span>
+<span class="kw">let</span> <span class="prop">price</span>     = <span class="num">99.99</span>;                 <span class="cmt">// Number (decimal)</span>
+<span class="kw">let</span> <span class="prop">isLogged</span>  = <span class="kw">true</span>;                  <span class="cmt">// Boolean</span>
+<span class="kw">let</span> <span class="prop">x</span>;                                <span class="cmt">// Undefined (declared, not assigned)</span>
+<span class="kw">let</span> <span class="prop">data</span>      = <span class="kw">null</span>;                  <span class="cmt">// Null (intentional absence)</span>
+<span class="kw">let</span> <span class="prop">id</span>        = <span class="fn">Symbol</span>(<span class="str">"userID"</span>);      <span class="cmt">// Symbol (unique value)</span>
+<span class="kw">let</span> <span class="prop">big</span>       = <span class="num">9007199254740991n</span>;     <span class="cmt">// BigInt (beyond Number limit)</span>
+
+<span class="fn">typeof</span> <span class="str">"hello"</span>   <span class="cmt">// "string"</span>
+<span class="fn">typeof</span> <span class="num">42</span>        <span class="cmt">// "number"</span>
+<span class="fn">typeof</span> <span class="kw">true</span>      <span class="cmt">// "boolean"</span>
+<span class="fn">typeof</span> <span class="kw">undefined</span> <span class="cmt">// "undefined"</span>
+<span class="fn">typeof</span> <span class="kw">null</span>      <span class="cmt">// "object" ← famous JS bug!</span>
+<span class="fn">typeof</span> <span class="fn">Symbol</span>()  <span class="cmt">// "symbol"</span>
+<span class="fn">typeof</span> <span class="num">1n</span>        <span class="cmt">// "bigint"</span></pre>
+    </div>
+
+    <h3>Non-Primitive Types — stored by reference</h3>
+    <div class="code-wrap">
+      <div class="code-label">javascript — object, array, function, set</div>
+      <pre><span class="cmt">// Object — key-value pairs</span>
+<span class="kw">let</span> <span class="prop">student</span> = { <span class="prop">name</span>: <span class="str">"Balaji"</span>, <span class="prop">age</span>: <span class="num">20</span>, <span class="prop">email</span>: <span class="str">"b@gmail.com"</span> };
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">student</span>.<span class="prop">name</span>);           <span class="cmt">// Balaji</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">student</span>[<span class="str">"age"</span>]);         <span class="cmt">// 20</span>
+
+<span class="cmt">// Array — ordered list of values</span>
+<span class="kw">let</span> <span class="prop">numbers</span> = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>];
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">numbers</span>[<span class="num">2</span>]);             <span class="cmt">// 3</span>
+
+<span class="cmt">// Function — block of reusable code</span>
+<span class="kw">function</span> <span class="fn">greet</span>() { <span class="kw">return</span> <span class="str">"Hello!"</span>; }
+
+<span class="cmt">// Set — stores only unique values</span>
+<span class="kw">let</span> <span class="prop">mySet</span> = <span class="kw">new</span> <span class="fn">Set</span>();
+<span class="prop">mySet</span>.<span class="fn">add</span>(<span class="num">1</span>);
+<span class="prop">mySet</span>.<span class="fn">add</span>(<span class="num">2</span>);
+<span class="prop">mySet</span>.<span class="fn">add</span>(<span class="num">1</span>);                        <span class="cmt">// ignored — already in set</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">mySet</span>);                  <span class="cmt">// Set(2) { 1, 2 }</span>
+
+<span class="cmt">// Map — key-value pairs where keys can be any type</span>
+<span class="kw">let</span> <span class="prop">map</span> = <span class="kw">new</span> <span class="fn">Map</span>();
+<span class="prop">map</span>.<span class="fn">set</span>(<span class="str">"name"</span>, <span class="str">"Alice"</span>);
+<span class="prop">map</span>.<span class="fn">set</span>(<span class="num">1</span>, <span class="str">"one"</span>);</pre>
+    </div>
+
+    <h3>Null vs Undefined</h3>
+    <table class="compare-table">
+      <thead><tr><th>Feature</th><th>undefined</th><th>null</th></tr></thead>
+      <tbody>
+        <tr><td>Meaning</td><td>Variable declared but not assigned</td><td>Intentionally empty/absent value</td></tr>
+        <tr><td>Set by</td><td>JavaScript automatically</td><td>Programmer deliberately</td></tr>
+        <tr><td>typeof</td><td><code>"undefined"</code></td><td><code>"object"</code> (JS bug)</td></tr>
+        <tr><td>== check</td><td><code>null == undefined</code> → true</td><td>Loose equality only</td></tr>
+        <tr><td>=== check</td><td><code>null === undefined</code> → false</td><td>Strict equality differs</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ══ 04 ══ -->
+  <section id="scope">
+    <div class="section-tag tag-yellow">04 — Scope</div>
+    <h2>Scope</h2>
+    <p class="section-intro">Scope determines where a variable can be accessed in your code. In real projects, scope prevents bugs and variable conflicts.</p>
+
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-title">Global Scope</div>
+        <ul class="notes">
+          <li>Variable declared <strong>outside any function or block</strong></li>
+          <li>Accessible anywhere in the entire program</li>
+          <li>Too many globals = messy, collision-prone code</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Function Scope</div>
+        <ul class="notes">
+          <li>Variable declared <strong>inside a function</strong></li>
+          <li>Only accessible within that function</li>
+          <li>Both <code>var</code>, <code>let</code>, <code>const</code> are function-scoped when declared inside</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Block Scope</div>
+        <ul class="notes">
+          <li>Variables declared with <code>let</code>/<code>const</code> inside <code>{ }</code></li>
+          <li>Only accessible inside that block</li>
+          <li><code>var</code> does NOT have block scope — it leaks out</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="code-wrap">
+      <div class="code-label">javascript — scope examples</div>
+      <pre><span class="cmt">// Global scope</span>
+<span class="kw">let</span> <span class="prop">age</span> = <span class="num">30</span>;
+<span class="kw">function</span> <span class="fn">showAge</span>() { <span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">age</span>); }  <span class="cmt">// ✅ accessible</span>
+<span class="fn">showAge</span>();
+
+<span class="cmt">// Function scope</span>
+<span class="kw">function</span> <span class="fn">myFunc</span>() {
+  <span class="kw">let</span> <span class="prop">secret</span> = <span class="str">"inside only"</span>;
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">secret</span>);               <span class="cmt">// ✅ works</span>
+}
+<span class="cmt">// console.log(secret); → ❌ ReferenceError</span>
+
+<span class="cmt">// Block scope — let/const respect blocks</span>
+<span class="kw">if</span> (<span class="kw">true</span>) {
+  <span class="kw">let</span> <span class="prop">blockVar</span> = <span class="str">"I am block-scoped"</span>;
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">blockVar</span>);             <span class="cmt">// ✅ works</span>
+}
+<span class="cmt">// console.log(blockVar); → ❌ ReferenceError</span>
+
+<span class="cmt">// var LEAKS out of blocks (not block-scoped!)</span>
+<span class="kw">if</span> (<span class="kw">true</span>) {
+  <span class="kw">var</span> <span class="prop">leaked</span> = <span class="str">"I leaked!"</span>;
+}
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">leaked</span>);                  <span class="cmt">// ✅ accessible — var bug!</span></pre>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Lexical Scope</div>
+      <ul class="notes">
+        <li>A function's scope is determined by <strong>where it is defined</strong>, not where it is called</li>
+        <li>Inner functions can access variables from their outer (parent) scope</li>
+        <li>This is the foundation of <strong>closures</strong></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ══ 05 ══ -->
+  <section id="hoisting">
+    <div class="section-tag tag-yellow">05 — Hoisting</div>
+    <h2>Hoisting</h2>
+    <p class="section-intro">JavaScript moves declarations to the top of their scope before executing code — during the memory creation phase.</p>
+
+    <div class="code-wrap">
+      <div class="code-label">javascript — hoisting behaviour</div>
+      <pre><span class="cmt">// var is hoisted and initialised with undefined</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">x</span>);    <span class="cmt">// undefined (NOT error)</span>
+<span class="kw">var</span> <span class="prop">x</span> = <span class="num">5</span>;
+
+<span class="cmt">// let / const are hoisted but NOT initialised (Temporal Dead Zone)</span>
+<span class="cmt">// console.log(y); → ❌ ReferenceError: Cannot access 'y' before init</span>
+<span class="kw">let</span> <span class="prop">y</span> = <span class="num">10</span>;
+
+<span class="cmt">// Function DECLARATIONS are fully hoisted (can be called before defined)</span>
+<span class="fn">sayHello</span>();                          <span class="cmt">// ✅ works — "Hello!"</span>
+<span class="kw">function</span> <span class="fn">sayHello</span>() { <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Hello!"</span>); }
+
+<span class="cmt">// Function EXPRESSIONS are NOT fully hoisted</span>
+<span class="cmt">// greet();  → ❌ TypeError: greet is not a function</span>
+<span class="kw">var</span> <span class="prop">greet</span> = <span class="kw">function</span>() { <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Hi!"</span>); };</pre>
+    </div>
+
+    <div class="highlight-box">⚠ <strong>Temporal Dead Zone (TDZ)</strong>: The period between when <code>let</code>/<code>const</code> variables are hoisted and when they are initialised. Accessing them in TDZ throws a ReferenceError.</div>
+  </section>
+
+  <!-- ══ 06 ══ -->
+  <section id="operators">
+    <div class="section-tag tag-yellow">06 — Operators</div>
+    <h2>Operators</h2>
+    <p class="section-intro">Used to perform actions on values. Know all types and especially the difference between == and ===.</p>
+
+    <div class="code-wrap">
+      <div class="code-label">javascript — all operator types</div>
+      <pre><span class="cmt">// 1. Arithmetic</span>
+<span class="kw">let</span> <span class="prop">a</span> = <span class="num">10</span>, <span class="prop">b</span> = <span class="num">3</span>;
+<span class="prop">a</span> + <span class="prop">b</span>   <span class="cmt">// 13  Addition</span>
+<span class="prop">a</span> - <span class="prop">b</span>   <span class="cmt">// 7   Subtraction</span>
+<span class="prop">a</span> * <span class="prop">b</span>   <span class="cmt">// 30  Multiplication</span>
+<span class="prop">a</span> / <span class="prop">b</span>   <span class="cmt">// 3.33 Division</span>
+<span class="prop">a</span> % <span class="prop">b</span>   <span class="cmt">// 1   Modulus (remainder)</span>
+<span class="prop">a</span> ** <span class="prop">b</span>  <span class="cmt">// 1000 Exponentiation (a^b)</span>
+<span class="prop">a</span>++      <span class="cmt">// Post-increment (returns a, then increments)</span>
+++<span class="prop">a</span>      <span class="cmt">// Pre-increment (increments, then returns a)</span>
+
+<span class="cmt">// 2. Comparison</span>
+<span class="num">10</span> == <span class="str">"10"</span>   <span class="cmt">// true  — loose equality (type coercion)</span>
+<span class="num">10</span> === <span class="str">"10"</span>  <span class="cmt">// false — strict equality (no coercion)</span>
+<span class="num">10</span> != <span class="str">"10"</span>   <span class="cmt">// false</span>
+<span class="num">10</span> !== <span class="str">"10"</span>  <span class="cmt">// true</span>
+<span class="num">10</span> > <span class="num">5</span>        <span class="cmt">// true</span>
+<span class="num">10</span> < <span class="num">5</span>        <span class="cmt">// false</span>
+
+<span class="cmt">// 3. Logical</span>
+<span class="kw">true</span> && <span class="kw">false</span>  <span class="cmt">// false (AND — both must be true)</span>
+<span class="kw">true</span> || <span class="kw">false</span>  <span class="cmt">// true  (OR — at least one true)</span>
+!<span class="kw">true</span>          <span class="cmt">// false (NOT)</span>
+
+<span class="cmt">// 4. Ternary operator — shorthand if/else</span>
+<span class="kw">let</span> <span class="prop">result</span> = (<span class="num">2</span> + <span class="num">3</span> === <span class="num">5</span>) ? <span class="str">"yes"</span> : <span class="str">"no"</span>;  <span class="cmt">// "yes"</span>
+
+<span class="cmt">// 5. Nullish Coalescing (??) — returns right side if left is null/undefined</span>
+<span class="kw">let</span> <span class="prop">val</span> = <span class="kw">null</span> ?? <span class="str">"default"</span>;               <span class="cmt">// "default"</span>
+
+<span class="cmt">// 6. Optional Chaining (?.) — safely access nested properties</span>
+<span class="kw">let</span> <span class="prop">user</span> = <span class="kw">null</span>;
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">user</span>?.<span class="prop">name</span>);                  <span class="cmt">// undefined (no error)</span></pre>
+    </div>
+
+    <div class="highlight-box yellow">💡 Always use <code>===</code> (strict equality) in JS. <code>==</code> does type coercion which causes unexpected results: <code>0 == false</code> is <code>true</code>, <code>"" == false</code> is <code>true</code>.</div>
+  </section>
+
+  <!-- ══ 07 ══ -->
+  <section id="conditionals">
+    <div class="section-tag tag-yellow">07 — Conditionals</div>
+    <h2>Conditional Statements</h2>
+    <p class="section-intro">Control the flow of code based on conditions.</p>
+
+    <div class="code-wrap">
+      <div class="code-label">javascript — if, else if, else, switch</div>
+      <pre><span class="cmt">// if / else if / else</span>
+<span class="kw">let</span> <span class="prop">marks</span> = <span class="num">75</span>;
+<span class="kw">if</span> (<span class="prop">marks</span> >= <span class="num">90</span>) {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Grade A"</span>);
+} <span class="kw">else if</span> (<span class="prop">marks</span> >= <span class="num">75</span>) {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Grade B"</span>);
+} <span class="kw">else if</span> (<span class="prop">marks</span> >= <span class="num">35</span>) {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Grade C"</span>);
+} <span class="kw">else</span> {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Fail"</span>);
+}
+
+<span class="cmt">// switch — better for multiple exact-value checks</span>
+<span class="kw">let</span> <span class="prop">day</span> = <span class="str">"Monday"</span>;
+<span class="kw">switch</span> (<span class="prop">day</span>) {
+  <span class="kw">case</span> <span class="str">"Monday"</span>:
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Start of work week"</span>);
+    <span class="kw">break</span>;
+  <span class="kw">case</span> <span class="str">"Friday"</span>:
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"End of work week"</span>);
+    <span class="kw">break</span>;
+  <span class="kw">default</span>:
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Midweek day"</span>);
+}
+
+<span class="cmt">// Ternary — single line if/else</span>
+<span class="kw">let</span> <span class="prop">age</span> = <span class="num">20</span>;
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">age</span> >= <span class="num">18</span> ? <span class="str">"Adult"</span> : <span class="str">"Minor"</span>);</pre>
+    </div>
+  </section>
+
+  <!-- ══ 08 ══ -->
+  <section id="loops">
+    <div class="section-tag tag-yellow">08 — Loops</div>
+    <h2>Loops</h2>
+    <p class="section-intro">Repeat a block of code — know all loop types and when to use each.</p>
+
+    <div class="code-wrap">
+      <div class="code-label">javascript — for, while, do-while, for...of, for...in</div>
+      <pre><span class="cmt">// for loop — when you know the count</span>
+<span class="kw">for</span> (<span class="kw">let</span> <span class="prop">i</span> = <span class="num">0</span>; <span class="prop">i</span> < <span class="num">5</span>; <span class="prop">i</span>++) {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">i</span>);
+}
+
+<span class="cmt">// while loop — when condition-driven</span>
+<span class="kw">let</span> <span class="prop">i</span> = <span class="num">0</span>;
+<span class="kw">while</span> (<span class="prop">i</span> < <span class="num">5</span>) {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">i</span>);
+  <span class="prop">i</span>++;
+}
+
+<span class="cmt">// do...while — runs at least once</span>
+<span class="kw">let</span> <span class="prop">n</span> = <span class="num">0</span>;
+<span class="kw">do</span> {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">n</span>);
+  <span class="prop">n</span>++;
+} <span class="kw">while</span> (<span class="prop">n</span> < <span class="num">3</span>);
+
+<span class="cmt">// for...of — iterate over array values</span>
+<span class="kw">let</span> <span class="prop">fruits</span> = [<span class="str">"apple"</span>, <span class="str">"banana"</span>, <span class="str">"cherry"</span>];
+<span class="kw">for</span> (<span class="kw">let</span> <span class="prop">fruit</span> <span class="kw">of</span> <span class="prop">fruits</span>) {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">fruit</span>);
+}
+
+<span class="cmt">// for...in — iterate over object keys</span>
+<span class="kw">let</span> <span class="prop">student</span> = { <span class="prop">name</span>: <span class="str">"Alice"</span>, <span class="prop">age</span>: <span class="num">20</span> };
+<span class="kw">for</span> (<span class="kw">let</span> <span class="prop">key</span> <span class="kw">in</span> <span class="prop">student</span>) {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">key</span>, <span class="prop">student</span>[<span class="prop">key</span>]);
+}
+
+<span class="cmt">// break — stop loop completely</span>
+<span class="kw">for</span> (<span class="kw">let</span> <span class="prop">i</span> = <span class="num">0</span>; <span class="prop">i</span> <= <span class="num">5</span>; <span class="prop">i</span>++) {
+  <span class="kw">if</span> (<span class="prop">i</span> === <span class="num">3</span>) <span class="kw">break</span>;          <span class="cmt">// stops at 3</span>
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">i</span>);
+}
+
+<span class="cmt">// continue — skip current iteration</span>
+<span class="kw">for</span> (<span class="kw">let</span> <span class="prop">i</span> = <span class="num">0</span>; <span class="prop">i</span> <= <span class="num">5</span>; <span class="prop">i</span>++) {
+  <span class="kw">if</span> (<span class="prop">i</span> === <span class="num">3</span>) <span class="kw">continue</span>;       <span class="cmt">// skips 3, continues loop</span>
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">i</span>);
+}</pre>
+    </div>
+  </section>
+
+  <!-- ══ 09 ══ -->
+  <section id="functions">
+    <div class="section-tag tag-amber">09 — Functions</div>
+    <h2>Types of Functions</h2>
+    <p class="section-intro">JavaScript has many ways to define functions — know each type, its syntax, and when to use it.</p>
+
+    <div class="code-wrap">
+      <div class="code-label">javascript — all function types</div>
+      <pre><span class="cmt">// 1. Named Function (Function Declaration)</span>
+<span class="kw">function</span> <span class="fn">sayHello</span>() {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Hello"</span>);
+}
+<span class="fn">sayHello</span>();
+
+<span class="cmt">// 2. Anonymous Function (no name)</span>
+<span class="fn">setTimeout</span>(<span class="kw">function</span>() {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Runs after 2s"</span>);
+}, <span class="num">2000</span>);
+
+<span class="cmt">// 3. Function Expression (stored in variable)</span>
+<span class="kw">let</span> <span class="prop">add</span> = <span class="kw">function</span>(<span class="prop">a</span>, <span class="prop">b</span>) {
+  <span class="kw">return</span> <span class="prop">a</span> + <span class="prop">b</span>;
+};
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">add</span>(<span class="num">3</span>, <span class="num">4</span>));               <span class="cmt">// 7</span>
+
+<span class="cmt">// 4. Arrow Function (ES6) — shorter syntax</span>
+<span class="kw">const</span> <span class="prop">greet</span> = () => <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Hi!"</span>);
+<span class="kw">const</span> <span class="prop">multiply</span> = (<span class="prop">a</span>, <span class="prop">b</span>) => <span class="prop">a</span> * <span class="prop">b</span>;   <span class="cmt">// implicit return</span>
+<span class="kw">const</span> <span class="prop">square</span>   = <span class="prop">n</span> => <span class="prop">n</span> * <span class="prop">n</span>;          <span class="cmt">// single param, no parentheses</span>
+
+<span class="cmt">// 5. IIFE — Immediately Invoked Function Expression</span>
+(<span class="kw">function</span>() {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Runs immediately!"</span>);
+})();
+
+<span class="cmt">// 6. Generator Function — yields multiple values</span>
+<span class="kw">function</span>* <span class="fn">counter</span>() {
+  <span class="kw">yield</span> <span class="num">1</span>;
+  <span class="kw">yield</span> <span class="num">2</span>;
+  <span class="kw">yield</span> <span class="num">3</span>;
+}
+<span class="kw">let</span> <span class="prop">gen</span> = <span class="fn">counter</span>();
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">gen</span>.<span class="fn">next</span>().<span class="prop">value</span>);        <span class="cmt">// 1</span></pre>
+    </div>
+
+    <h3>Parameters vs Arguments</h3>
+    <div class="card">
+      <ul class="notes">
+        <li><strong>Parameter</strong>: variable in the function definition — placeholder (<code>name</code> in <code>function greet(name)</code>)</li>
+        <li><strong>Argument</strong>: actual value passed when calling the function (<code>"Alice"</code> in <code>greet("Alice")</code>)</li>
+        <li><strong>Default parameters</strong>: <code>function greet(name = "User") {}</code> — used when no argument is passed</li>
+        <li><strong>Rest parameters</strong>: <code>function add(...nums) {}</code> — collects all extra arguments into an array</li>
+      </ul>
+    </div>
+
+    <h3>Arrow Functions vs Regular Functions</h3>
+    <table class="compare-table">
+      <thead><tr><th>Feature</th><th>Regular Function</th><th>Arrow Function</th></tr></thead>
+      <tbody>
+        <tr><td>Syntax</td><td><code>function() {}</code></td><td><code>() => {}</code></td></tr>
+        <tr><td><code>this</code> binding</td><td>Own <code>this</code> (context-dependent)</td><td>Inherits <code>this</code> from surrounding scope</td></tr>
+        <tr><td><code>arguments</code> object</td><td>Has its own <code>arguments</code></td><td>No <code>arguments</code> object</td></tr>
+        <tr><td>Used as constructor</td><td>Yes (<code>new</code> keyword)</td><td>No — throws error</td></tr>
+        <tr><td>Best use</td><td>Methods, constructors</td><td>Callbacks, short functions</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ══ 10 ══ -->
+  <section id="this">
+    <div class="section-tag tag-amber">10 — this Keyword</div>
+    <h2>this Keyword</h2>
+    <p class="section-intro">The <code>this</code> keyword refers to the object that is currently calling the function — its value depends on context.</p>
+
+    <div class="code-wrap">
+      <div class="code-label">javascript — this in different contexts</div>
+      <pre><span class="cmt">// In an object method — this = the object</span>
+<span class="kw">const</span> <span class="prop">user</span> = {
+  <span class="prop">name</span>: <span class="str">"Balaji"</span>,
+  <span class="fn">show</span>: <span class="kw">function</span>() {
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="kw">this</span>.<span class="prop">name</span>);         <span class="cmt">// "Balaji"</span>
+  }
+};
+<span class="prop">user</span>.<span class="fn">show</span>();
+
+<span class="cmt">// Arrow function — this = surrounding (lexical) scope</span>
+<span class="kw">const</span> <span class="prop">obj</span> = {
+  <span class="prop">name</span>: <span class="str">"Alice"</span>,
+  <span class="fn">show</span>: () => {
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="kw">this</span>.<span class="prop">name</span>);         <span class="cmt">// undefined — no own this</span>
+  }
+};
+
+<span class="cmt">// In global context — this = window (browser)</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="kw">this</span>);                   <span class="cmt">// Window object in browser</span>
+
+<span class="cmt">// In a class — this = the instance</span>
+<span class="kw">class</span> <span class="fn">Person</span> {
+  <span class="fn">constructor</span>(<span class="prop">name</span>) { <span class="kw">this</span>.<span class="prop">name</span> = <span class="prop">name</span>; }
+  <span class="fn">greet</span>() { <span class="fn">console</span>.<span class="fn">log</span>(<span class="kw">this</span>.<span class="prop">name</span>); }
+}
+<span class="kw">new</span> <span class="fn">Person</span>(<span class="str">"Bob"</span>).<span class="fn">greet</span>();           <span class="cmt">// "Bob"</span></pre>
+    </div>
+  </section>
+
+  <!-- ══ 11 ══ -->
+  <section id="closures">
+    <div class="section-tag tag-amber">11 — Closures</div>
+    <h2>Closures</h2>
+    <p class="section-intro">A closure is when an inner function remembers variables from its outer function even after the outer function has finished running.</p>
+
+    <div class="highlight-box purple">💡 Closures are created every time a function is created in JavaScript. They give inner functions access to the outer function's scope.</div>
+
+    <div class="code-wrap">
+      <div class="code-label">javascript — closure example</div>
+      <pre><span class="kw">function</span> <span class="fn">outer</span>() {
+  <span class="kw">let</span> <span class="prop">count</span> = <span class="num">0</span>;               <span class="cmt">// outer variable</span>
+
+  <span class="kw">function</span> <span class="fn">inner</span>() {
+    <span class="prop">count</span>++;
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">count</span>);
+  }
+  <span class="kw">return</span> <span class="prop">inner</span>;
+}
+
+<span class="kw">const</span> <span class="prop">demo</span> = <span class="fn">outer</span>();            <span class="cmt">// outer() finishes, but count is remembered</span>
+<span class="prop">demo</span>();                          <span class="cmt">// 1</span>
+<span class="prop">demo</span>();                          <span class="cmt">// 2</span>
+<span class="prop">demo</span>();                          <span class="cmt">// 3</span></pre>
+    </div>
+
+    <div class="code-wrap">
+      <div class="code-label">javascript — practical closure uses</div>
+      <pre><span class="cmt">// 1. Private data (data encapsulation)</span>
+<span class="kw">function</span> <span class="fn">createCounter</span>() {
+  <span class="kw">let</span> <span class="prop">count</span> = <span class="num">0</span>;                 <span class="cmt">// private — not accessible outside</span>
+  <span class="kw">return</span> {
+    <span class="fn">increment</span>: () => ++<span class="prop">count</span>,
+    <span class="fn">decrement</span>: () => --<span class="prop">count</span>,
+    <span class="fn">getCount</span>:  () => <span class="prop">count</span>
+  };
+}
+<span class="kw">const</span> <span class="prop">counter</span> = <span class="fn">createCounter</span>();
+<span class="prop">counter</span>.<span class="fn">increment</span>();
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">counter</span>.<span class="fn">getCount</span>());  <span class="cmt">// 1</span>
+
+<span class="cmt">// 2. Memoization — remember previous results</span>
+<span class="kw">function</span> <span class="fn">memoize</span>(<span class="prop">fn</span>) {
+  <span class="kw">let</span> <span class="prop">cache</span> = {};
+  <span class="kw">return</span> <span class="kw">function</span>(<span class="prop">n</span>) {
+    <span class="kw">if</span> (<span class="prop">cache</span>[<span class="prop">n</span>]) <span class="kw">return</span> <span class="prop">cache</span>[<span class="prop">n</span>];
+    <span class="prop">cache</span>[<span class="prop">n</span>] = <span class="prop">fn</span>(<span class="prop">n</span>);
+    <span class="kw">return</span> <span class="prop">cache</span>[<span class="prop">n</span>];
+  };
+}</pre>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Uses of Closures</div>
+      <ul class="notes">
+        <li><strong>Data privacy</strong> — hide internal variables (like private fields)</li>
+        <li><strong>Maintaining state</strong> — remember values between function calls</li>
+        <li><strong>Factory functions</strong> — create multiple instances with private data</li>
+        <li><strong>Memoization</strong> — cache results to improve performance</li>
+        <li><strong>Event handlers</strong> — retain access to variables from when handler was created</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ══ 12 ══ -->
+  <section id="call-apply-bind">
+    <div class="section-tag tag-amber">12 — call, apply, bind</div>
+    <h2>call(), apply(), bind()</h2>
+    <p class="section-intro">Three methods to explicitly set the value of <code>this</code> for a function call.</p>
+
+    <div class="code-wrap">
+      <div class="code-label">javascript — call, apply, bind</div>
+      <pre><span class="kw">const</span> <span class="prop">person</span> = { <span class="prop">name</span>: <span class="str">"Alice"</span> };
+
+<span class="kw">function</span> <span class="fn">greet</span>(<span class="prop">city</span>, <span class="prop">country</span>) {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">`</span>${<span class="kw">this</span>.<span class="prop">name</span>}<span class="str"> from </span>${<span class="prop">city</span>}<span class="str">, </span>${<span class="prop">country</span>}<span class="str">`</span>);
+}
+
+<span class="cmt">// call() — invoke immediately, args passed one by one</span>
+<span class="prop">greet</span>.<span class="fn">call</span>(<span class="prop">person</span>, <span class="str">"Chennai"</span>, <span class="str">"India"</span>);
+<span class="cmt">// Output: Alice from Chennai, India</span>
+
+<span class="cmt">// apply() — invoke immediately, args passed as array</span>
+<span class="prop">greet</span>.<span class="fn">apply</span>(<span class="prop">person</span>, [<span class="str">"Mumbai"</span>, <span class="str">"India"</span>]);
+<span class="cmt">// Output: Alice from Mumbai, India</span>
+
+<span class="cmt">// bind() — returns NEW function with fixed this (does NOT call immediately)</span>
+<span class="kw">const</span> <span class="prop">boundGreet</span> = <span class="prop">greet</span>.<span class="fn">bind</span>(<span class="prop">person</span>, <span class="str">"Delhi"</span>);
+<span class="prop">boundGreet</span>(<span class="str">"India"</span>);
+<span class="cmt">// Output: Alice from Delhi, India</span></pre>
+    </div>
+
+    <table class="compare-table">
+      <thead><tr><th>Method</th><th>Calls function?</th><th>Args format</th><th>Returns</th></tr></thead>
+      <tbody>
+        <tr><td><code>call()</code></td><td>Yes, immediately</td><td>One by one</td><td>Function result</td></tr>
+        <tr><td><code>apply()</code></td><td>Yes, immediately</td><td>As an array</td><td>Function result</td></tr>
+        <tr><td><code>bind()</code></td><td>No</td><td>One by one</td><td>New bound function</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ══ 13 ══ -->
+  <section id="currying">
+    <div class="section-tag tag-amber">13 — Currying</div>
+    <h2>Currying</h2>
+    <p class="section-intro">Converting a function with multiple arguments into a sequence of nested functions, each taking one argument at a time.</p>
+
+    <div class="code-wrap">
+      <div class="code-label">javascript — currying</div>
+      <pre><span class="cmt">// Normal function</span>
+<span class="kw">function</span> <span class="fn">add</span>(<span class="prop">a</span>, <span class="prop">b</span>) { <span class="kw">return</span> <span class="prop">a</span> + <span class="prop">b</span>; }
+<span class="fn">add</span>(<span class="num">2</span>, <span class="num">3</span>);              <span class="cmt">// 5</span>
+
+<span class="cmt">// Curried version</span>
+<span class="kw">function</span> <span class="fn">curriedAdd</span>(<span class="prop">a</span>) {
+  <span class="kw">return</span> <span class="kw">function</span>(<span class="prop">b</span>) {
+    <span class="kw">return</span> <span class="prop">a</span> + <span class="prop">b</span>;
+  };
+}
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="fn">curriedAdd</span>(<span class="num">2</span>)(<span class="num">3</span>));   <span class="cmt">// 5</span>
+
+<span class="cmt">// Arrow function curried version</span>
+<span class="kw">const</span> <span class="prop">multiply</span> = <span class="prop">a</span> => <span class="prop">b</span> => <span class="prop">a</span> * <span class="prop">b</span>;
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">multiply</span>(<span class="num">3</span>)(<span class="num">4</span>));     <span class="cmt">// 12</span>
+
+<span class="cmt">// Practical use: pre-set one argument</span>
+<span class="kw">const</span> <span class="prop">double</span> = <span class="prop">multiply</span>(<span class="num">2</span>);      <span class="cmt">// pre-set a = 2</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">double</span>(<span class="num">5</span>));           <span class="cmt">// 10</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">double</span>(<span class="num">7</span>));           <span class="cmt">// 14</span></pre>
+    </div>
+  </section>
+
+  <!-- ══ 14 ══ -->
+  <section id="pure">
+    <div class="section-tag tag-amber">14 — Pure vs Impure Functions</div>
+    <h2>Pure vs Impure Functions</h2>
+    <p class="section-intro">A core concept in functional programming — important for writing predictable, testable code.</p>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Pure Function <span class="badge badge-g">predictable</span></div>
+        <ul class="notes">
+          <li>Always returns the <strong>same output for the same input</strong></li>
+          <li>Does <strong>not change anything outside</strong> the function (no side effects)</li>
+          <li>Easy to test, debug, and reason about</li>
+        </ul>
+        <div class="code-wrap" style="margin-top:0.5rem">
+          <div class="code-label">python</div>
+          <pre><span class="kw">function</span> <span class="fn">add</span>(<span class="prop">a</span>, <span class="prop">b</span>) { <span class="kw">return</span> <span class="prop">a</span> + <span class="prop">b</span>; }
+<span class="fn">add</span>(<span class="num">2</span>, <span class="num">3</span>);   <span class="cmt">// always 5</span></pre>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Impure Function <span class="badge badge-r">side effects</span></div>
+        <ul class="notes">
+          <li>Changes something <strong>outside the function</strong> (modifies global state)</li>
+          <li>Or gives <strong>different outputs</strong> for the same inputs</li>
+          <li>Examples: console.log(), Math.random(), Date.now(), DOM changes</li>
+        </ul>
+        <div class="code-wrap" style="margin-top:0.5rem">
+          <div class="code-label">javascript</div>
+          <pre><span class="kw">let</span> <span class="prop">count</span> = <span class="num">0</span>;
+<span class="kw">function</span> <span class="fn">increase</span>() {
+  <span class="prop">count</span>++;               <span class="cmt">// modifies outside</span>
+  <span class="kw">return</span> <span class="prop">count</span>;
+}</pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 15 ══ -->
+  <section id="es6">
+    <div class="section-tag tag-cyan">15 — ES6+ Features</div>
+    <h2>ES6+ Modern JavaScript</h2>
+    <p class="section-intro">ECMAScript 2015 (ES6) and later editions introduced major features that are now standard in all JavaScript code.</p>
+
+    <div class="code-wrap">
+      <div class="code-label">javascript — template literals &amp; string interpolation</div>
+      <pre><span class="cmt">// Template Literals — use backticks (`)</span>
+<span class="kw">let</span> <span class="prop">name</span> = <span class="str">"Balaji"</span>;
+<span class="kw">let</span> <span class="prop">age</span>  = <span class="num">30</span>;
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="str">`My name is </span>${<span class="prop">name</span>}<span class="str"> and I am </span>${<span class="prop">age</span>}<span class="str"> years old`</span>);
+
+<span class="cmt">// Multi-line strings</span>
+<span class="kw">let</span> <span class="prop">message</span> = <span class="str">`Hello,
+this is
+multi-line`</span>;
+
+<span class="cmt">// Tagged templates (advanced)</span>
+<span class="kw">const</span> <span class="fn">tag</span> = (<span class="prop">strings</span>, ...<span class="prop">values</span>) => <span class="prop">strings</span>.<span class="fn">join</span>(<span class="str">''</span>) + <span class="prop">values</span>.<span class="fn">join</span>(<span class="str">''</span>);</pre>
+    </div>
+  </section>
+
+  <!-- ══ 16 ══ -->
+  <section id="destructuring">
+    <div class="section-tag tag-cyan">16 — Destructuring</div>
+    <h2>Destructuring</h2>
+    <p class="section-intro">Extract values from arrays or objects into variables using a clean, simple syntax.</p>
+
+    <div class="code-wrap">
+      <div class="code-label">javascript — object &amp; array destructuring</div>
+      <pre><span class="cmt">// Object destructuring</span>
+<span class="kw">const</span> <span class="prop">person</span> = { <span class="prop">name</span>: <span class="str">"Balaji"</span>, <span class="prop">age</span>: <span class="num">20</span>, <span class="prop">email</span>: <span class="str">"b@gmail.com"</span> };
+<span class="kw">const</span> { <span class="prop">name</span>, <span class="prop">age</span>, <span class="prop">email</span> } = <span class="prop">person</span>;
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">name</span>, <span class="prop">age</span>);              <span class="cmt">// Balaji 20</span>
+
+<span class="cmt">// With rename and default values</span>
+<span class="kw">const</span> { <span class="prop">name</span>: <span class="prop">fullName</span>, <span class="prop">city</span> = <span class="str">"Chennai"</span> } = <span class="prop">person</span>;
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">fullName</span>, <span class="prop">city</span>);         <span class="cmt">// Balaji Chennai</span>
+
+<span class="cmt">// Array destructuring</span>
+<span class="kw">const</span> [<span class="prop">first</span>, <span class="prop">second</span>, ...<span class="prop">rest</span>] = [<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>, <span class="num">40</span>];
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">first</span>);                  <span class="cmt">// 10</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">rest</span>);                   <span class="cmt">// [30, 40]</span>
+
+<span class="cmt">// Destructuring in function parameters</span>
+<span class="kw">function</span> <span class="fn">display</span>({ <span class="prop">name</span>, <span class="prop">age</span> }) {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">`</span>${<span class="prop">name</span>}<span class="str"> is </span>${<span class="prop">age</span>}<span class="str">`</span>);
+}
+<span class="fn">display</span>(<span class="prop">person</span>);</pre>
+    </div>
+  </section>
+
+  <!-- ══ 17 ══ -->
+  <section id="spread-rest">
+    <div class="section-tag tag-cyan">17 — Spread &amp; Rest</div>
+    <h2>Spread Operator &amp; Rest Operator</h2>
+    <p class="section-intro">Both use <code>...</code> but in opposite directions — spread expands, rest collects.</p>
+
+    <div class="code-wrap">
+      <div class="code-label">javascript — spread vs rest</div>
+      <pre><span class="cmt">// SPREAD — expands array/object into individual elements</span>
+
+<span class="cmt">// Copy and merge arrays</span>
+<span class="kw">const</span> <span class="prop">arr1</span> = [<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>];
+<span class="kw">const</span> <span class="prop">arr2</span> = [...<span class="prop">arr1</span>, <span class="num">40</span>, <span class="num">50</span>];
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">arr2</span>);                  <span class="cmt">// [10, 20, 30, 40, 50]</span>
+
+<span class="cmt">// Copy and extend objects</span>
+<span class="kw">const</span> <span class="prop">person1</span> = { <span class="prop">name</span>: <span class="str">"Balaji"</span> };
+<span class="kw">const</span> <span class="prop">person2</span> = { ...<span class="prop">person1</span>, <span class="prop">email</span>: <span class="str">"b@gmail.com"</span> };
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">person2</span>);              <span class="cmt">// { name: "Balaji", email: "b@gmail.com" }</span>
+
+<span class="cmt">// Spread into function arguments</span>
+<span class="kw">const</span> <span class="prop">nums</span> = [<span class="num">3</span>, <span class="num">1</span>, <span class="num">4</span>, <span class="num">1</span>, <span class="num">5</span>];
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="fn">Math</span>.<span class="fn">max</span>(...<span class="prop">nums</span>));    <span class="cmt">// 5</span>
+
+<span class="cmt">// REST — collects multiple values into an array</span>
+<span class="kw">function</span> <span class="fn">sum</span>(...<span class="prop">numbers</span>) {          <span class="cmt">// rest parameter</span>
+  <span class="kw">return</span> <span class="prop">numbers</span>.<span class="fn">reduce</span>((<span class="prop">a</span>, <span class="prop">b</span>) => <span class="prop">a</span> + <span class="prop">b</span>, <span class="num">0</span>);
+}
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="fn">sum</span>(<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>));       <span class="cmt">// 10</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="fn">sum</span>(<span class="num">10</span>, <span class="num">20</span>));             <span class="cmt">// 30</span></pre>
+    </div>
+
+    <table class="compare-table">
+      <thead><tr><th>Feature</th><th>Spread (...)</th><th>Rest (...)</th></tr></thead>
+      <tbody>
+        <tr><td>Direction</td><td>Expands/unpacks</td><td>Collects/gathers</td></tr>
+        <tr><td>Used in</td><td>Function calls, array/object literals</td><td>Function parameters</td></tr>
+        <tr><td>Example</td><td><code>Math.max(...arr)</code></td><td><code>function f(...args)</code></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ══ 18 ══ -->
+  <section id="modules">
+    <div class="section-tag tag-cyan">18 — Modules</div>
+    <h2>JavaScript Modules (import / export)</h2>
+    <p class="section-intro">A module is a file that can export and import code — introduced in ES6 to organise large codebases.</p>
+
+    <div class="code-wrap">
+      <div class="code-label">javascript — named vs default exports</div>
+      <pre><span class="cmt">// ─── Named Export (math.js) ───────────────────────</span>
+<span class="kw">export</span> <span class="kw">function</span> <span class="fn">add</span>(<span class="prop">a</span>, <span class="prop">b</span>)      { <span class="kw">return</span> <span class="prop">a</span> + <span class="prop">b</span>; }
+<span class="kw">export</span> <span class="kw">function</span> <span class="fn">subtract</span>(<span class="prop">a</span>, <span class="prop">b</span>) { <span class="kw">return</span> <span class="prop">a</span> - <span class="prop">b</span>; }
+<span class="kw">export</span> <span class="kw">const</span> <span class="prop">PI</span> = <span class="num">3.14159</span>;
+
+<span class="cmt">// ─── Named Import (main.js) ───────────────────────</span>
+<span class="kw">import</span> { <span class="prop">add</span>, <span class="prop">PI</span> } <span class="kw">from</span> <span class="str">"./math.js"</span>;    <span class="cmt">// must use same names</span>
+<span class="kw">import</span> * <span class="kw">as</span> <span class="prop">Math</span>  <span class="kw">from</span> <span class="str">"./math.js"</span>;    <span class="cmt">// import everything</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="fn">add</span>(<span class="num">2</span>, <span class="num">3</span>));
+
+<span class="cmt">// ─── Default Export (utils.js) ───────────────────</span>
+<span class="kw">const</span> <span class="prop">greet</span> = (<span class="prop">name</span>) => <span class="str">`Hello, </span>${<span class="prop">name</span>}<span class="str">!`</span>;
+<span class="kw">export default</span> <span class="prop">greet</span>;               <span class="cmt">// only ONE default per file</span>
+
+<span class="cmt">// ─── Default Import ───────────────────────────────</span>
+<span class="kw">import</span> <span class="prop">greet</span>      <span class="kw">from</span> <span class="str">"./utils.js"</span>;  <span class="cmt">// any name allowed</span>
+<span class="kw">import</span> <span class="prop">myGreet</span>   <span class="kw">from</span> <span class="str">"./utils.js"</span>;  <span class="cmt">// different name — still works</span></pre>
+    </div>
+
+    <table class="compare-table">
+      <thead><tr><th>Feature</th><th>Named Export</th><th>Default Export</th></tr></thead>
+      <tbody>
+        <tr><td>Per file</td><td>Multiple allowed</td><td>Only one</td></tr>
+        <tr><td>Import syntax</td><td><code>import { name }</code> — must match</td><td><code>import anyName</code> — any name</td></tr>
+        <tr><td>Best for</td><td>Multiple utilities</td><td>Single main export (class, component)</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ══ 19 ══ -->
+  <section id="async-intro">
+    <div class="section-tag tag-purple">19 — Async JavaScript</div>
+    <h2>Synchronous vs Asynchronous</h2>
+    <p class="section-intro">JavaScript is single-threaded — it can only do one thing at a time. Async allows long tasks to run in the background without blocking other code.</p>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Synchronous <span class="badge badge-a">blocking</span></div>
+        <ul class="notes">
+          <li>Code executes <strong>line by line, in order</strong></li>
+          <li>Each line waits for the previous one to finish</li>
+          <li>If one task is slow → everything waits</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Asynchronous <span class="badge badge-g">non-blocking</span></div>
+        <ul class="notes">
+          <li>Long tasks (API calls, timers) run <strong>in the background</strong></li>
+          <li>JS continues to the next line without waiting</li>
+          <li>Results are handled via callbacks, promises, or async/await</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="code-wrap">
+      <div class="code-label">javascript — sync vs async output order</div>
+      <pre><span class="cmt">// Synchronous — runs in order</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"first"</span>);
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"second"</span>);
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"third"</span>);
+<span class="cmt">// Output: first, second, third</span>
+
+<span class="cmt">// Asynchronous — setTimeout deferred to task queue</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"first"</span>);
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"second"</span>);
+<span class="fn">setTimeout</span>(() => <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"third"</span>), <span class="num">3000</span>);
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"fourth"</span>);
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"fifth"</span>);
+<span class="cmt">// Output: first, second, fourth, fifth, (3s delay) third</span></pre>
+    </div>
+  </section>
+
+  <!-- ══ 20 ══ -->
+  <section id="callbacks">
+    <div class="section-tag tag-purple">20 — Callbacks &amp; HOF</div>
+    <h2>Callbacks &amp; Higher-Order Functions</h2>
+    <p class="section-intro">Callbacks are the foundation of async JS — a function passed as an argument to another function.</p>
+
+    <div class="code-wrap">
+      <div class="code-label">javascript — callbacks and callback hell</div>
+      <pre><span class="cmt">// Simple callback</span>
+<span class="fn">setTimeout</span>(() => {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"This runs after 2 seconds"</span>);
+}, <span class="num">2000</span>);
+
+<span class="cmt">// Higher-Order Function — takes a function as argument</span>
+<span class="kw">const</span> <span class="fn">register</span> = (<span class="prop">callback</span>) => {
+  <span class="fn">setTimeout</span>(() => {
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Registered!"</span>);
+    <span class="fn">callback</span>();
+  }, <span class="num">2000</span>);
+};
+<span class="kw">const</span> <span class="fn">login</span> = () => <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Logged in!"</span>);
+<span class="fn">register</span>(login);
+
+<span class="cmt">// Callback Hell — deeply nested, hard to maintain</span>
+<span class="fn">getData</span>((<span class="prop">data</span>) => {
+  <span class="fn">processData</span>(<span class="prop">data</span>, (<span class="prop">processed</span>) => {
+    <span class="fn">saveData</span>(<span class="prop">processed</span>, (<span class="prop">result</span>) => {
+      <span class="fn">sendEmail</span>(<span class="prop">result</span>, () => {
+        <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Done!"</span>);  <span class="cmt">// pyramid of doom</span>
+      });
+    });
+  });
+});</pre>
+    </div>
+
+    <div class="highlight-box red">⚠ <strong>Callback Hell</strong> = deeply nested callbacks that are hard to read, debug, and maintain. This is why Promises and async/await were introduced.</div>
+  </section>
+
+  <!-- ══ 21 ══ -->
+  <section id="promises">
+    <div class="section-tag tag-purple">21 — Promises</div>
+    <h2>Promises</h2>
+    <p class="section-intro">A Promise represents the eventual completion or failure of an asynchronous operation — eliminates callback hell.</p>
+
+    <div class="card">
+      <div class="card-title">Promise States</div>
+      <div class="flow" style="margin-top:0.5rem">
+        <div class="flow-box">Pending</div><div class="flow-arrow">→</div>
+        <div class="flow-box">Fulfilled (resolved)</div><div class="flow-arrow">→</div>
+        <div class="flow-box">.then() runs</div>
+      </div>
+      <div class="flow">
+        <div class="flow-box">Pending</div><div class="flow-arrow">→</div>
+        <div class="flow-box">Rejected</div><div class="flow-arrow">→</div>
+        <div class="flow-box">.catch() runs</div>
+      </div>
+    </div>
+
+    <div class="code-wrap">
+      <div class="code-label">javascript — promise chain</div>
+      <pre><span class="kw">const</span> <span class="fn">register</span> = () => <span class="kw">new</span> <span class="fn">Promise</span>((<span class="prop">resolve</span>, <span class="prop">reject</span>) => {
+  <span class="fn">setTimeout</span>(() => {
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"register"</span>);
+    <span class="fn">resolve</span>(<span class="str">"register-success"</span>);
+  }, <span class="num">2000</span>);
+});
+
+<span class="kw">const</span> <span class="fn">login</span> = () => <span class="kw">new</span> <span class="fn">Promise</span>((<span class="prop">resolve</span>, <span class="prop">reject</span>) => {
+  <span class="fn">setTimeout</span>(() => {
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"login"</span>);
+    <span class="fn">resolve</span>();
+  }, <span class="num">1000</span>);
+});
+
+<span class="cmt">// Promise chaining — cleaner than nested callbacks</span>
+<span class="fn">register</span>()
+  .<span class="fn">then</span>(<span class="fn">login</span>)
+  .<span class="fn">then</span>(() => <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"All done!"</span>))
+  .<span class="fn">catch</span>((<span class="prop">error</span>) => <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Error:"</span>, <span class="prop">error</span>));
+
+<span class="cmt">// Promise.all — run multiple promises in parallel</span>
+<span class="fn">Promise</span>.<span class="fn">all</span>([<span class="fn">promise1</span>, <span class="fn">promise2</span>])
+  .<span class="fn">then</span>(([<span class="prop">r1</span>, <span class="prop">r2</span>]) => <span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">r1</span>, <span class="prop">r2</span>));   <span class="cmt">// waits for ALL</span>
+
+<span class="cmt">// Promise.race — resolves with first settled promise</span>
+<span class="fn">Promise</span>.<span class="fn">race</span>([<span class="fn">promise1</span>, <span class="fn">promise2</span>])
+  .<span class="fn">then</span>((<span class="prop">winner</span>) => <span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">winner</span>));
+
+<span class="cmt">// Promise.allSettled — waits for all, regardless of success/fail</span>
+<span class="fn">Promise</span>.<span class="fn">allSettled</span>([<span class="fn">p1</span>, <span class="fn">p2</span>]).<span class="fn">then</span>(<span class="fn">console</span>.<span class="fn">log</span>);</pre>
+    </div>
+  </section>
+
+  <!-- ══ 22 ══ -->
+  <section id="async-await">
+    <div class="section-tag tag-purple">22 — async / await</div>
+    <h2>async / await</h2>
+    <p class="section-intro">Syntactic sugar over Promises — makes asynchronous code look and read like synchronous code. Much cleaner than .then() chains.</p>
+
+    <div class="code-wrap">
+      <div class="code-label">javascript — async/await</div>
+      <pre><span class="cmt">// async — makes a function always return a Promise</span>
+<span class="cmt">// await — pauses execution until Promise settles (non-blocking)</span>
+
+<span class="kw">async function</span> <span class="fn">start</span>() {
+  <span class="kw">try</span> {
+    <span class="kw">await</span> <span class="fn">register</span>();
+    <span class="kw">await</span> <span class="fn">login</span>();
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"All done!"</span>);
+  } <span class="kw">catch</span> (<span class="prop">error</span>) {
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Error:"</span>, <span class="prop">error</span>);
+  }
+}
+<span class="fn">start</span>();
+
+<span class="cmt">// Fetch API example (real-world use)</span>
+<span class="kw">async function</span> <span class="fn">getUsers</span>() {
+  <span class="kw">try</span> {
+    <span class="kw">const</span> <span class="prop">response</span> = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">"https://api.example.com/users"</span>);
+    <span class="kw">const</span> <span class="prop">data</span>     = <span class="kw">await</span> <span class="prop">response</span>.<span class="fn">json</span>();
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">data</span>);
+  } <span class="kw">catch</span> (<span class="prop">err</span>) {
+    <span class="fn">console</span>.<span class="fn">error</span>(<span class="str">"Failed:"</span>, <span class="prop">err</span>);
+  }
+}</pre>
+    </div>
+
+    <table class="compare-table">
+      <thead><tr><th>Feature</th><th>Promise .then()</th><th>async/await</th></tr></thead>
+      <tbody>
+        <tr><td>Readability</td><td>Chained — okay for simple</td><td>Looks synchronous — much cleaner</td></tr>
+        <tr><td>Error handling</td><td><code>.catch()</code></td><td><code>try/catch</code></td></tr>
+        <tr><td>Debugging</td><td>Hard in deep chains</td><td>Easy — normal call stack</td></tr>
+        <tr><td>Under the hood</td><td>Promises</td><td>Still uses Promises</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ══ 23 ══ -->
+  <section id="event-loop">
+    <div class="section-tag tag-purple">23 — Event Loop</div>
+    <h2>Event Loop</h2>
+    <p class="section-intro">The mechanism that allows JavaScript to be non-blocking despite being single-threaded.</p>
+
+    <div class="flow">
+      <div class="flow-box">Call Stack</div><div class="flow-arrow">→</div>
+      <div class="flow-box">Web APIs</div><div class="flow-arrow">→</div>
+      <div class="flow-box">Task Queue</div><div class="flow-arrow">→</div>
+      <div class="flow-box">Event Loop checks stack</div><div class="flow-arrow">→</div>
+      <div class="flow-box">Push to Call Stack</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">How it works</div>
+      <ul class="notes">
+        <li><strong>Call Stack</strong>: where synchronous code runs — LIFO (Last In, First Out)</li>
+        <li><strong>Web APIs</strong>: browser handles async tasks (setTimeout, fetch, event listeners) outside JS thread</li>
+        <li><strong>Callback Queue (Task Queue)</strong>: completed async callbacks wait here</li>
+        <li><strong>Microtask Queue</strong>: Promise callbacks (.then/.catch) go here — higher priority than task queue</li>
+        <li><strong>Event Loop</strong>: continuously checks if call stack is empty; if yes, pushes from microtask queue first, then task queue</li>
+      </ul>
+    </div>
+
+    <div class="code-wrap">
+      <div class="code-label">javascript — event loop execution order</div>
+      <pre><span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"1 — synchronous"</span>);
+
+<span class="fn">setTimeout</span>(() => <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"2 — setTimeout"</span>), <span class="num">0</span>);
+
+<span class="fn">Promise</span>.<span class="fn">resolve</span>().<span class="fn">then</span>(() => <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"3 — Promise"</span>));
+
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"4 — synchronous"</span>);
+
+<span class="cmt">// Output order:
+// 1 — synchronous
+// 4 — synchronous
+// 3 — Promise      (microtask queue runs before task queue)
+// 2 — setTimeout   (task queue)</span></pre>
+    </div>
+  </section>
+
+  <!-- ══ 24 ══ -->
+  <section id="arrays">
+    <div class="section-tag tag-green">24 — Array Methods</div>
+    <h2>Array Methods</h2>
+    <p class="section-intro">JavaScript arrays have powerful built-in methods — know all of them with examples.</p>
+
+    <div class="code-wrap">
+      <div class="code-label">javascript — common array methods</div>
+      <pre><span class="kw">let</span> <span class="prop">fruits</span> = [<span class="str">"apple"</span>, <span class="str">"banana"</span>, <span class="str">"cherry"</span>];
+
+<span class="prop">fruits</span>.<span class="fn">push</span>(<span class="str">"mango"</span>);     <span class="cmt">// Add to END → ["apple","banana","cherry","mango"]</span>
+<span class="prop">fruits</span>.<span class="fn">pop</span>();           <span class="cmt">// Remove from END → removes "mango"</span>
+<span class="prop">fruits</span>.<span class="fn">unshift</span>(<span class="str">"kiwi"</span>); <span class="cmt">// Add to START → ["kiwi","apple","banana","cherry"]</span>
+<span class="prop">fruits</span>.<span class="fn">shift</span>();         <span class="cmt">// Remove from START → removes "kiwi"</span>
+
+<span class="prop">fruits</span>.<span class="fn">slice</span>(<span class="num">0</span>, <span class="num">2</span>);     <span class="cmt">// Get part (non-destructive) → ["apple","banana"]</span>
+<span class="prop">fruits</span>.<span class="fn">splice</span>(<span class="num">1</span>, <span class="num">1</span>, <span class="str">"grape"</span>); <span class="cmt">// Remove 1 at index 1, insert "grape"</span>
+<span class="prop">fruits</span>.<span class="fn">join</span>(<span class="str">" - "</span>);    <span class="cmt">// Array to string → "apple - grape - cherry"</span>
+<span class="prop">fruits</span>.<span class="fn">indexOf</span>(<span class="str">"cherry"</span>); <span class="cmt">// Find index → 2 (-1 if not found)</span>
+<span class="prop">fruits</span>.<span class="fn">includes</span>(<span class="str">"apple"</span>); <span class="cmt">// Check existence → true</span>
+<span class="prop">fruits</span>.<span class="fn">reverse</span>();      <span class="cmt">// Reverse in place</span>
+<span class="prop">fruits</span>.<span class="fn">sort</span>();          <span class="cmt">// Sort alphabetically</span>
+[...<span class="prop">new</span> <span class="fn">Set</span>(<span class="prop">fruits</span>)];   <span class="cmt">// Remove duplicates</span>
+<span class="prop">fruits</span>.<span class="fn">flat</span>();          <span class="cmt">// Flatten nested arrays</span>
+<span class="prop">fruits</span>.<span class="fn">find</span>(<span class="prop">x</span> => <span class="prop">x</span>.<span class="fn">startsWith</span>(<span class="str">"b"</span>));   <span class="cmt">// First match</span>
+<span class="prop">fruits</span>.<span class="fn">findIndex</span>(<span class="prop">x</span> => <span class="prop">x</span> === <span class="str">"cherry"</span>); <span class="cmt">// Index of first match</span>
+<span class="prop">fruits</span>.<span class="fn">every</span>(<span class="prop">x</span> => <span class="prop">x</span>.<span class="fn">length</span> > <span class="num">3</span>);      <span class="cmt">// All match? → boolean</span>
+<span class="prop">fruits</span>.<span class="fn">some</span>(<span class="prop">x</span> => <span class="prop">x</span> === <span class="str">"apple"</span>);       <span class="cmt">// Any match? → boolean</span></pre>
+    </div>
+  </section>
+
+  <!-- ══ 25 ══ -->
+  <section id="array-hof">
+    <div class="section-tag tag-green">25 — map, filter, reduce</div>
+    <h2>map(), filter(), reduce(), forEach()</h2>
+    <p class="section-intro">The most-used array higher-order functions — know them all deeply, including reduce.</p>
+
+    <div class="code-wrap">
+      <div class="code-label">javascript — map, filter, reduce, forEach</div>
+      <pre><span class="kw">let</span> <span class="prop">arr</span> = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>, <span class="num">6</span>, <span class="num">7</span>, <span class="num">8</span>];
+
+<span class="cmt">// map() — transforms each element, returns NEW array (same length)</span>
+<span class="kw">let</span> <span class="prop">tripled</span> = <span class="prop">arr</span>.<span class="fn">map</span>(<span class="prop">n</span> => <span class="prop">n</span> * <span class="num">3</span>);
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">tripled</span>);              <span class="cmt">// [3,6,9,12,15,18,21,24]</span>
+
+<span class="cmt">// filter() — keeps elements that pass a test, returns NEW array</span>
+<span class="kw">let</span> <span class="prop">evens</span> = <span class="prop">arr</span>.<span class="fn">filter</span>(<span class="prop">n</span> => <span class="prop">n</span> % <span class="num">2</span> === <span class="num">0</span>);
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">evens</span>);               <span class="cmt">// [2,4,6,8]</span>
+
+<span class="cmt">// reduce() — combines all values into a SINGLE value</span>
+<span class="kw">let</span> <span class="prop">total</span> = <span class="prop">arr</span>.<span class="fn">reduce</span>((<span class="prop">sum</span>, <span class="prop">n</span>) => <span class="prop">sum</span> + <span class="prop">n</span>, <span class="num">0</span>);
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">total</span>);               <span class="cmt">// 36</span>
+
+<span class="cmt">// reduce() to find max value</span>
+<span class="kw">let</span> <span class="prop">max</span> = <span class="prop">arr</span>.<span class="fn">reduce</span>((<span class="prop">m</span>, <span class="prop">n</span>) => <span class="prop">n</span> > <span class="prop">m</span> ? <span class="prop">n</span> : <span class="prop">m</span>, <span class="num">0</span>);
+
+<span class="cmt">// reduce() to count occurrences</span>
+<span class="kw">let</span> <span class="prop">words</span> = [<span class="str">"a"</span>, <span class="str">"b"</span>, <span class="str">"a"</span>, <span class="str">"c"</span>, <span class="str">"b"</span>, <span class="str">"a"</span>];
+<span class="kw">let</span> <span class="prop">count</span> = <span class="prop">words</span>.<span class="fn">reduce</span>((<span class="prop">acc</span>, <span class="prop">word</span>) => {
+  <span class="prop">acc</span>[<span class="prop">word</span>] = (<span class="prop">acc</span>[<span class="prop">word</span>] || <span class="num">0</span>) + <span class="num">1</span>;
+  <span class="kw">return</span> <span class="prop">acc</span>;
+}, {});                             <span class="cmt">// { a: 3, b: 2, c: 1 }</span>
+
+<span class="cmt">// forEach() — loop through each element (no return value)</span>
+<span class="prop">arr</span>.<span class="fn">forEach</span>(<span class="prop">n</span> => <span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">n</span>));</pre>
+    </div>
+
+    <table class="compare-table">
+      <thead><tr><th>Method</th><th>Returns</th><th>Use for</th></tr></thead>
+      <tbody>
+        <tr><td><code>map()</code></td><td>New array (same length)</td><td>Transform each element</td></tr>
+        <tr><td><code>filter()</code></td><td>New array (shorter)</td><td>Keep elements passing a test</td></tr>
+        <tr><td><code>reduce()</code></td><td>Single value</td><td>Accumulate (sum, count, group)</td></tr>
+        <tr><td><code>forEach()</code></td><td>undefined</td><td>Side effects (logging, DOM updates)</td></tr>
+        <tr><td><code>find()</code></td><td>First matching element</td><td>Search for one item</td></tr>
+        <tr><td><code>some()</code></td><td>boolean</td><td>Check if any match</td></tr>
+        <tr><td><code>every()</code></td><td>boolean</td><td>Check if all match</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ══ 26 ══ -->
+  <section id="strings">
+    <div class="section-tag tag-green">26 — String Methods</div>
+    <h2>String Methods</h2>
+    <p class="section-intro">JavaScript strings are immutable — string methods return new strings, they never modify the original.</p>
+
+    <div class="code-wrap">
+      <div class="code-label">javascript — string methods</div>
+      <pre><span class="kw">let</span> <span class="prop">msg</span> = <span class="str">"  Hello JavaScript World!  "</span>;
+
+<span class="prop">msg</span>.<span class="fn">trim</span>()                    <span class="cmt">// Remove whitespace → "Hello JavaScript World!"</span>
+<span class="prop">msg</span>.<span class="fn">trimStart</span>()               <span class="cmt">// Remove leading whitespace only</span>
+<span class="prop">msg</span>.<span class="fn">trimEnd</span>()                 <span class="cmt">// Remove trailing whitespace only</span>
+<span class="prop">msg</span>.<span class="fn">toUpperCase</span>()             <span class="cmt">// "  HELLO JAVASCRIPT WORLD!  "</span>
+<span class="prop">msg</span>.<span class="fn">toLowerCase</span>()             <span class="cmt">// "  hello javascript world!  "</span>
+<span class="prop">msg</span>.<span class="fn">charAt</span>(<span class="num">7</span>)                 <span class="cmt">// Character at index 7</span>
+<span class="prop">msg</span>.<span class="fn">replace</span>(<span class="str">"Hello"</span>, <span class="str">"Hi"</span>)   <span class="cmt">// Replace first occurrence</span>
+<span class="prop">msg</span>.<span class="fn">replaceAll</span>(<span class="str">"l"</span>, <span class="str">"L"</span>)     <span class="cmt">// Replace all occurrences</span>
+<span class="prop">msg</span>.<span class="fn">split</span>(<span class="str">" "</span>)               <span class="cmt">// Split into array by space</span>
+<span class="prop">msg</span>.<span class="fn">includes</span>(<span class="str">"JavaScript"</span>)   <span class="cmt">// true — check if contains</span>
+<span class="prop">msg</span>.<span class="fn">startsWith</span>(<span class="str">"  Hello"</span>)    <span class="cmt">// true</span>
+<span class="prop">msg</span>.<span class="fn">endsWith</span>(<span class="str">"!  "</span>)          <span class="cmt">// true</span>
+<span class="prop">msg</span>.<span class="fn">indexOf</span>(<span class="str">"World"</span>)         <span class="cmt">// Position of first occurrence</span>
+<span class="prop">msg</span>.<span class="fn">slice</span>(<span class="num">7</span>, <span class="num">17</span>)             <span class="cmt">// Extract portion (start, end)</span>
+<span class="prop">msg</span>.<span class="fn">substring</span>(<span class="num">7</span>, <span class="num">17</span>)         <span class="cmt">// Similar to slice</span>
+<span class="prop">msg</span>.<span class="fn">padStart</span>(<span class="num">30</span>, <span class="str">"*"</span>)        <span class="cmt">// Pad to length 30 with *</span>
+<span class="prop">msg</span>.<span class="fn">padEnd</span>(<span class="num">30</span>, <span class="str">"-"</span>)          <span class="cmt">// Pad end to length 30</span>
+<span class="prop">msg</span>.<span class="fn">repeat</span>(<span class="num">2</span>)                 <span class="cmt">// Repeat string 2 times</span>
+<span class="prop">msg</span>.<span class="fn">length</span>                    <span class="cmt">// Number of characters</span></pre>
+    </div>
+  </section>
+
+  <!-- ══ 27 ══ -->
+  <section id="dom">
+    <div class="section-tag tag-blue">27 — DOM Manipulation</div>
+    <h2>DOM — Document Object Model</h2>
+    <p class="section-intro">The DOM is a tree representation of the HTML document — JavaScript can select, create, modify, and delete elements through it.</p>
+
+    <div class="code-wrap">
+      <div class="code-label">javascript — selecting elements</div>
+      <pre><span class="cmt">// By ID — returns single element</span>
+<span class="kw">const</span> <span class="prop">title</span> = <span class="prop">document</span>.<span class="fn">getElementById</span>(<span class="str">"title"</span>);
+
+<span class="cmt">// By class — returns HTMLCollection</span>
+<span class="kw">const</span> <span class="prop">items</span> = <span class="prop">document</span>.<span class="fn">getElementsByClassName</span>(<span class="str">"demo"</span>);
+<span class="prop">items</span>[<span class="num">0</span>].<span class="prop">innerText</span> = <span class="str">"Welcome"</span>;
+
+<span class="cmt">// By tag name — returns HTMLCollection</span>
+<span class="kw">const</span> <span class="prop">headings</span> = <span class="prop">document</span>.<span class="fn">getElementsByTagName</span>(<span class="str">"h1"</span>);
+
+<span class="cmt">// querySelector — returns first match (CSS selector)</span>
+<span class="kw">const</span> <span class="prop">el</span> = <span class="prop">document</span>.<span class="fn">querySelector</span>(<span class="str">"#title"</span>);
+<span class="prop">el</span>.<span class="prop">textContent</span> = <span class="str">"New Title"</span>;
+
+<span class="cmt">// querySelectorAll — returns NodeList of ALL matches</span>
+<span class="kw">const</span> <span class="prop">paras</span> = <span class="prop">document</span>.<span class="fn">querySelectorAll</span>(<span class="str">"p"</span>);
+<span class="prop">paras</span>.<span class="fn">forEach</span>(<span class="prop">p</span> => <span class="prop">p</span>.<span class="prop">textContent</span> = <span class="str">"Updated"</span>);</pre>
+    </div>
+
+    <div class="code-wrap">
+      <div class="code-label">javascript — modifying &amp; creating elements</div>
+      <pre><span class="kw">const</span> <span class="prop">el</span> = <span class="prop">document</span>.<span class="fn">getElementById</span>(<span class="str">"title"</span>);
+
+<span class="cmt">// Content manipulation</span>
+<span class="prop">el</span>.<span class="prop">innerText</span>   = <span class="str">"Plain text"</span>;       <span class="cmt">// text only</span>
+<span class="prop">el</span>.<span class="prop">textContent</span> = <span class="str">"Text content"</span>;    <span class="cmt">// includes hidden text</span>
+<span class="prop">el</span>.<span class="prop">innerHTML</span>   = <span class="str">"&lt;b&gt;Bold text&lt;/b&gt;"</span>;<span class="cmt">// parses HTML</span>
+
+<span class="cmt">// Style &amp; class manipulation</span>
+<span class="prop">el</span>.<span class="prop">style</span>.<span class="prop">color</span>     = <span class="str">"red"</span>;
+<span class="prop">el</span>.<span class="prop">style</span>.<span class="prop">fontSize</span>  = <span class="str">"24px"</span>;
+<span class="prop">el</span>.<span class="prop">classList</span>.<span class="fn">add</span>(<span class="str">"active"</span>);
+<span class="prop">el</span>.<span class="prop">classList</span>.<span class="fn">remove</span>(<span class="str">"active"</span>);
+<span class="prop">el</span>.<span class="prop">classList</span>.<span class="fn">toggle</span>(<span class="str">"hidden"</span>);
+
+<span class="cmt">// Attribute manipulation</span>
+<span class="prop">el</span>.<span class="fn">setAttribute</span>(<span class="str">"data-id"</span>, <span class="str">"123"</span>);
+<span class="prop">el</span>.<span class="fn">getAttribute</span>(<span class="str">"data-id"</span>);
+<span class="prop">el</span>.<span class="fn">removeAttribute</span>(<span class="str">"data-id"</span>);
+
+<span class="cmt">// Create &amp; append new elements</span>
+<span class="kw">let</span> <span class="prop">newPara</span> = <span class="prop">document</span>.<span class="fn">createElement</span>(<span class="str">"p"</span>);
+<span class="prop">newPara</span>.<span class="prop">innerText</span> = <span class="str">"New paragraph"</span>;
+<span class="prop">document</span>.<span class="prop">body</span>.<span class="fn">appendChild</span>(<span class="prop">newPara</span>);    <span class="cmt">// add at end</span>
+<span class="prop">el</span>.<span class="fn">insertBefore</span>(<span class="prop">newPara</span>, <span class="prop">el</span>.<span class="prop">firstChild</span>);<span class="cmt">// insert before</span>
+<span class="prop">el</span>.<span class="fn">removeChild</span>(<span class="prop">newPara</span>);               <span class="cmt">// remove element</span></pre>
+    </div>
+  </section>
+
+  <!-- ══ 28 ══ -->
+  <section id="events">
+    <div class="section-tag tag-blue">28 — Events</div>
+    <h2>Events &amp; Event Handling</h2>
+    <p class="section-intro">Events are actions or occurrences in the browser — clicking, typing, hovering, submitting forms, etc.</p>
+
+    <div class="code-wrap">
+      <div class="code-label">javascript — event listeners</div>
+      <pre><span class="kw">const</span> <span class="prop">btn</span> = <span class="prop">document</span>.<span class="fn">getElementById</span>(<span class="str">"myBtn"</span>);
+
+<span class="cmt">// addEventListener — preferred method</span>
+<span class="prop">btn</span>.<span class="fn">addEventListener</span>(<span class="str">"click"</span>, (<span class="prop">event</span>) => {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Button clicked!"</span>);
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">event</span>.<span class="prop">target</span>);     <span class="cmt">// the element that was clicked</span>
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">event</span>.<span class="prop">type</span>);       <span class="cmt">// "click"</span>
+});
+
+<span class="cmt">// Common event types</span>
+<span class="prop">el</span>.<span class="fn">addEventListener</span>(<span class="str">"click"</span>, <span class="prop">handler</span>);       <span class="cmt">// mouse click</span>
+<span class="prop">el</span>.<span class="fn">addEventListener</span>(<span class="str">"dblclick"</span>, <span class="prop">handler</span>);    <span class="cmt">// double click</span>
+<span class="prop">el</span>.<span class="fn">addEventListener</span>(<span class="str">"mouseover"</span>, <span class="prop">handler</span>);   <span class="cmt">// hover enter</span>
+<span class="prop">el</span>.<span class="fn">addEventListener</span>(<span class="str">"mouseout"</span>, <span class="prop">handler</span>);    <span class="cmt">// hover leave</span>
+<span class="prop">el</span>.<span class="fn">addEventListener</span>(<span class="str">"keydown"</span>, <span class="prop">handler</span>);     <span class="cmt">// key pressed</span>
+<span class="prop">el</span>.<span class="fn">addEventListener</span>(<span class="str">"keyup"</span>, <span class="prop">handler</span>);       <span class="cmt">// key released</span>
+<span class="prop">el</span>.<span class="fn">addEventListener</span>(<span class="str">"submit"</span>, <span class="prop">handler</span>);      <span class="cmt">// form submitted</span>
+<span class="prop">el</span>.<span class="fn">addEventListener</span>(<span class="str">"change"</span>, <span class="prop">handler</span>);      <span class="cmt">// input changed</span>
+<span class="prop">el</span>.<span class="fn">addEventListener</span>(<span class="str">"input"</span>, <span class="prop">handler</span>);       <span class="cmt">// input typing</span>
+<span class="prop">window</span>.<span class="fn">addEventListener</span>(<span class="str">"load"</span>, <span class="prop">handler</span>);    <span class="cmt">// page loaded</span>
+<span class="prop">window</span>.<span class="fn">addEventListener</span>(<span class="str">"resize"</span>, <span class="prop">handler</span>);  <span class="cmt">// window resized</span>
+
+<span class="cmt">// Prevent default behaviour (e.g. form submission, link navigation)</span>
+<span class="prop">form</span>.<span class="fn">addEventListener</span>(<span class="str">"submit"</span>, (<span class="prop">e</span>) => {
+  <span class="prop">e</span>.<span class="fn">preventDefault</span>();                       <span class="cmt">// stop page reload</span>
+});</pre>
+    </div>
+  </section>
+
+  <!-- ══ 29 ══ -->
+  <section id="bubbling">
+    <div class="section-tag tag-blue">29 — Bubbling &amp; Capturing</div>
+    <h2>Event Bubbling &amp; Capturing</h2>
+    <p class="section-intro">When an event occurs, it travels through the DOM in two phases — capturing (down) and bubbling (up).</p>
+
+    <div class="flow">
+      <div class="flow-box">Capturing: Window → Document → Body → Parent → Child</div>
+    </div>
+    <div class="flow">
+      <div class="flow-box">Bubbling: Child → Parent → Body → Document → Window</div>
+    </div>
+
+    <div class="code-wrap">
+      <div class="code-label">javascript — bubbling vs capturing</div>
+      <pre><span class="cmt">// Default (bubbling) — false = event moves up from child to parent</span>
+<span class="prop">document</span>.<span class="fn">getElementById</span>(<span class="str">"child"</span>).<span class="fn">addEventListener</span>(<span class="str">"click"</span>, () => {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Child clicked"</span>);
+});                                          <span class="cmt">// 3rd param: false (default)</span>
+
+<span class="prop">document</span>.<span class="fn">getElementById</span>(<span class="str">"parent"</span>).<span class="fn">addEventListener</span>(<span class="str">"click"</span>, () => {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Parent also fires"</span>);        <span class="cmt">// bubbles up to parent</span>
+});
+
+<span class="cmt">// Capturing — true = fires from parent DOWN to child</span>
+<span class="prop">document</span>.<span class="fn">getElementById</span>(<span class="str">"parent"</span>).<span class="fn">addEventListener</span>(<span class="str">"click"</span>, () => {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Parent fires FIRST"</span>);
+}, <span class="kw">true</span>);                                   <span class="cmt">// 3rd param: true = capturing</span>
+
+<span class="cmt">// Stop event from bubbling up</span>
+<span class="prop">child</span>.<span class="fn">addEventListener</span>(<span class="str">"click"</span>, (<span class="prop">e</span>) => {
+  <span class="prop">e</span>.<span class="fn">stopPropagation</span>();                      <span class="cmt">// stops bubbling</span>
+});</pre>
+    </div>
+
+    <table class="compare-table">
+      <thead><tr><th>Feature</th><th>Bubbling</th><th>Capturing</th></tr></thead>
+      <tbody>
+        <tr><td>Direction</td><td>Bottom → Top (child to parent)</td><td>Top → Bottom (parent to child)</td></tr>
+        <tr><td>3rd param</td><td><code>false</code> (default)</td><td><code>true</code></td></tr>
+        <tr><td>More common</td><td>Yes — most events use bubbling</td><td>Rarely used</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ══ 30 ══ -->
+  <section id="bom">
+    <div class="section-tag tag-blue">30 — BOM</div>
+    <h2>BOM — Browser Object Model</h2>
+    <p class="section-intro">BOM allows JavaScript to interact with the browser window itself — not just the HTML document.</p>
+
+    <div class="code-wrap">
+      <div class="code-label">javascript — BOM methods</div>
+      <pre><span class="cmt">// Dialog boxes</span>
+<span class="fn">alert</span>(<span class="str">"Welcome to our website!"</span>);           <span class="cmt">// info only — OK button</span>
+<span class="kw">let</span> <span class="prop">name</span>   = <span class="fn">prompt</span>(<span class="str">"What is your name?"</span>);   <span class="cmt">// returns string input</span>
+<span class="kw">let</span> <span class="prop">answer</span> = <span class="fn">confirm</span>(<span class="str">"Are you sure?"</span>);        <span class="cmt">// returns true/false</span>
+
+<span class="cmt">// Navigation &amp; URL</span>
+<span class="prop">window</span>.<span class="prop">location</span>.<span class="prop">href</span>             <span class="cmt">// current URL</span>
+<span class="prop">window</span>.<span class="prop">location</span>.<span class="prop">href</span> = <span class="str">"https://google.com"</span>; <span class="cmt">// navigate</span>
+<span class="prop">window</span>.<span class="prop">location</span>.<span class="fn">reload</span>();        <span class="cmt">// refresh page</span>
+<span class="prop">window</span>.<span class="prop">history</span>.<span class="fn">back</span>();           <span class="cmt">// go back</span>
+<span class="prop">window</span>.<span class="prop">history</span>.<span class="fn">forward</span>();        <span class="cmt">// go forward</span>
+
+<span class="cmt">// Screen info</span>
+<span class="prop">window</span>.<span class="prop">innerWidth</span>               <span class="cmt">// browser viewport width</span>
+<span class="prop">window</span>.<span class="prop">innerHeight</span>              <span class="cmt">// browser viewport height</span>
+<span class="prop">screen</span>.<span class="prop">width</span>                    <span class="cmt">// full screen width</span>
+
+<span class="cmt">// Open new window/tab</span>
+<span class="prop">window</span>.<span class="fn">open</span>(<span class="str">"https://google.com"</span>, <span class="str">"_blank"</span>);</pre>
+    </div>
+  </section>
+
+  <!-- ══ 31 ══ -->
+  <section id="prototype">
+    <div class="section-tag tag-purple">31 — Prototype &amp; Inheritance</div>
+    <h2>Prototype &amp; Prototypal Inheritance</h2>
+    <p class="section-intro">Every JavaScript object has a hidden link to another object called its prototype — the foundation of inheritance in JS.</p>
+
+    <div class="code-wrap">
+      <div class="code-label">javascript — prototype chain &amp; classes</div>
+      <pre><span class="cmt">// Every object inherits from Object.prototype</span>
+<span class="kw">const</span> <span class="prop">arr</span> = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>];
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">arr</span>.__proto__ === <span class="fn">Array</span>.prototype);  <span class="cmt">// true</span>
+
+<span class="cmt">// ES6 Classes — syntactic sugar over prototype inheritance</span>
+<span class="kw">class</span> <span class="fn">Animal</span> {
+  <span class="fn">constructor</span>(<span class="prop">name</span>) { <span class="kw">this</span>.<span class="prop">name</span> = <span class="prop">name</span>; }
+  <span class="fn">speak</span>() { <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">`</span>${<span class="kw">this</span>.<span class="prop">name</span>}<span class="str"> makes a sound`</span>); }
+}
+
+<span class="kw">class</span> <span class="fn">Dog</span> <span class="kw">extends</span> <span class="fn">Animal</span> {   <span class="cmt">// inherits from Animal</span>
+  <span class="fn">speak</span>() {                  <span class="cmt">// override parent method</span>
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">`</span>${<span class="kw">this</span>.<span class="prop">name</span>}<span class="str"> barks`</span>);
+  }
+  <span class="fn">fetch</span>() {                  <span class="cmt">// new method</span>
+    <span class="fn">super</span>.<span class="fn">speak</span>();             <span class="cmt">// call parent method</span>
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Fetching!"</span>);
+  }
+}
+
+<span class="kw">const</span> <span class="prop">dog</span> = <span class="kw">new</span> <span class="fn">Dog</span>(<span class="str">"Rex"</span>);
+<span class="prop">dog</span>.<span class="fn">speak</span>();                  <span class="cmt">// Rex barks</span>
+<span class="prop">dog</span>.<span class="fn">fetch</span>();                  <span class="cmt">// Rex makes a sound → Fetching!</span>
+
+<span class="cmt">// Static methods — called on class, not instance</span>
+<span class="kw">class</span> <span class="fn">MathUtils</span> {
+  <span class="kw2">static</span> <span class="fn">add</span>(<span class="prop">a</span>, <span class="prop">b</span>) { <span class="kw">return</span> <span class="prop">a</span> + <span class="prop">b</span>; }
+}
+<span class="fn">MathUtils</span>.<span class="fn">add</span>(<span class="num">2</span>, <span class="num">3</span>);           <span class="cmt">// 5 (not new MathUtils().add)</span></pre>
+    </div>
+  </section>
+
+  <!-- ══ 32 ══ -->
+  <section id="error">
+    <div class="section-tag tag-red">32 — Error Handling</div>
+    <h2>Error Handling</h2>
+    <p class="section-intro">Managing errors without crashing the program — using try/catch/finally and custom errors.</p>
+
+    <div class="code-wrap">
+      <div class="code-label">javascript — try, catch, finally, throw</div>
+      <pre><span class="cmt">// try...catch — handle errors gracefully</span>
+<span class="kw">try</span> {
+  <span class="kw">let</span> <span class="prop">result</span> = <span class="num">10</span> / <span class="num">0</span>;
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">undefinedVar</span>);    <span class="cmt">// ReferenceError</span>
+} <span class="kw">catch</span> (<span class="prop">error</span>) {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Error occurred"</span>);
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">error</span>.<span class="prop">name</span>);      <span class="cmt">// "ReferenceError"</span>
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">error</span>.<span class="prop">message</span>);   <span class="cmt">// "undefinedVar is not defined"</span>
+} <span class="kw">finally</span> {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"This ALWAYS runs"</span>); <span class="cmt">// cleanup code here</span>
+}
+
+<span class="cmt">// throw — manually create an error</span>
+<span class="kw">function</span> <span class="fn">checkAge</span>(<span class="prop">age</span>) {
+  <span class="kw">try</span> {
+    <span class="kw">if</span> (<span class="prop">age</span> < <span class="num">18</span>) <span class="kw">throw new</span> <span class="fn">Error</span>(<span class="str">"Must be 18+"</span>);
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Access granted"</span>);
+  } <span class="kw">catch</span> (<span class="prop">e</span>) {
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">e</span>.<span class="prop">message</span>);       <span class="cmt">// "Must be 18+"</span>
+  }
+}
+
+<span class="cmt">// Custom Error class</span>
+<span class="kw">class</span> <span class="fn">ValidationError</span> <span class="kw">extends</span> <span class="fn">Error</span> {
+  <span class="fn">constructor</span>(<span class="prop">message</span>, <span class="prop">field</span>) {
+    <span class="kw">super</span>(<span class="prop">message</span>);
+    <span class="kw">this</span>.<span class="prop">name</span>  = <span class="str">"ValidationError"</span>;
+    <span class="kw">this</span>.<span class="prop">field</span> = <span class="prop">field</span>;
+  }
+}
+<span class="kw">throw new</span> <span class="fn">ValidationError</span>(<span class="str">"Invalid email"</span>, <span class="str">"email"</span>);</pre>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Common Error Types</div>
+      <ul class="notes">
+        <li><code>SyntaxError</code> — invalid JavaScript syntax</li>
+        <li><code>ReferenceError</code> — accessing undeclared variable</li>
+        <li><code>TypeError</code> — wrong type (calling non-function, accessing null property)</li>
+        <li><code>RangeError</code> — value out of allowed range (array length, recursion depth)</li>
+        <li><code>URIError</code> — invalid URI encoding</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ══ 33 ══ -->
+  <section id="storage">
+    <div class="section-tag tag-cyan">33 — Browser Storage</div>
+    <h2>localStorage, sessionStorage &amp; Cookies</h2>
+    <p class="section-intro">Three ways to store data in the browser — each with different scope, lifetime, and use cases.</p>
+
+    <div class="code-wrap">
+      <div class="code-label">javascript — localStorage &amp; sessionStorage</div>
+      <pre><span class="cmt">// localStorage — persists until manually deleted</span>
+<span class="prop">localStorage</span>.<span class="fn">setItem</span>(<span class="str">"username"</span>, <span class="str">"Balaji"</span>);
+<span class="kw">let</span> <span class="prop">user</span> = <span class="prop">localStorage</span>.<span class="fn">getItem</span>(<span class="str">"username"</span>); <span class="cmt">// "Balaji"</span>
+<span class="prop">localStorage</span>.<span class="fn">removeItem</span>(<span class="str">"username"</span>);
+<span class="prop">localStorage</span>.<span class="fn">clear</span>();                          <span class="cmt">// clear all</span>
+
+<span class="cmt">// Store objects (must serialize to JSON)</span>
+<span class="prop">localStorage</span>.<span class="fn">setItem</span>(<span class="str">"user"</span>, <span class="fn">JSON</span>.<span class="fn">stringify</span>({ <span class="prop">name</span>: <span class="str">"Alice"</span> }));
+<span class="kw">let</span> <span class="prop">obj</span> = <span class="fn">JSON</span>.<span class="fn">parse</span>(<span class="prop">localStorage</span>.<span class="fn">getItem</span>(<span class="str">"user"</span>));
+
+<span class="cmt">// sessionStorage — same API, but only lasts for the tab session</span>
+<span class="prop">sessionStorage</span>.<span class="fn">setItem</span>(<span class="str">"token"</span>, <span class="str">"abc123"</span>);
+<span class="prop">sessionStorage</span>.<span class="fn">getItem</span>(<span class="str">"token"</span>);
+<span class="prop">sessionStorage</span>.<span class="fn">clear</span>();</pre>
+    </div>
+
+    <table class="compare-table">
+      <thead><tr><th>Feature</th><th>localStorage</th><th>sessionStorage</th><th>Cookies</th></tr></thead>
+      <tbody>
+        <tr><td>Lifetime</td><td>Until deleted</td><td>Until tab closes</td><td>Until expiry or deletion</td></tr>
+        <tr><td>Capacity</td><td>~5–10 MB</td><td>~5 MB</td><td>~4 KB</td></tr>
+        <tr><td>Sent to server?</td><td>No</td><td>No</td><td>Yes — on every request</td></tr>
+        <tr><td>Access</td><td>JS only</td><td>JS only</td><td>JS + server</td></tr>
+        <tr><td>Scope</td><td>All tabs, same origin</td><td>Same tab only</td><td>Same origin (can limit)</td></tr>
+        <tr><td>Best for</td><td>Theme, preferences</td><td>One-session data</td><td>Auth tokens, sessions</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ══ 34 ══ -->
+  <section id="json">
+    <div class="section-tag tag-cyan">34 — JSON</div>
+    <h2>JSON — JavaScript Object Notation</h2>
+    <p class="section-intro">Lightweight text format for storing and exchanging data between client and server — the universal data format of APIs.</p>
+
+    <div class="code-wrap">
+      <div class="code-label">javascript — JSON.stringify &amp; JSON.parse</div>
+      <pre><span class="cmt">// JavaScript object</span>
+<span class="kw">const</span> <span class="prop">user</span> = { <span class="prop">name</span>: <span class="str">"Alice"</span>, <span class="prop">age</span>: <span class="num">25</span>, <span class="prop">hobbies</span>: [<span class="str">"reading"</span>, <span class="str">"coding"</span>] };
+
+<span class="cmt">// Object → JSON string (for sending to server / storing)</span>
+<span class="kw">const</span> <span class="prop">jsonStr</span> = <span class="fn">JSON</span>.<span class="fn">stringify</span>(<span class="prop">user</span>);
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">jsonStr</span>);
+<span class="cmt">// '{"name":"Alice","age":25,"hobbies":["reading","coding"]}'</span>
+
+<span class="cmt">// JSON string → JavaScript object (for receiving from server)</span>
+<span class="kw">const</span> <span class="prop">parsed</span> = <span class="fn">JSON</span>.<span class="fn">parse</span>(<span class="prop">jsonStr</span>);
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">parsed</span>.<span class="prop">name</span>);           <span class="cmt">// Alice</span>
+
+<span class="cmt">// Pretty print with indentation</span>
+<span class="fn">JSON</span>.<span class="fn">stringify</span>(<span class="prop">user</span>, <span class="kw">null</span>, <span class="num">2</span>);</pre>
+    </div>
+
+    <div class="card">
+      <div class="card-title">JSON Rules</div>
+      <ul class="notes">
+        <li>Keys must be <strong>double-quoted strings</strong> — no single quotes</li>
+        <li>Values can be: string, number, boolean, null, object, array</li>
+        <li>No functions, undefined, or comments allowed in JSON</li>
+        <li>JSON.stringify converts <code>undefined</code> → omitted; functions → omitted</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ══ 35 ══ -->
+  <section id="timers">
+    <div class="section-tag tag-cyan">35 — Timers</div>
+    <h2>setTimeout &amp; setInterval</h2>
+    <p class="section-intro">Built-in functions for executing code after a delay or repeatedly at intervals.</p>
+
+    <div class="code-wrap">
+      <div class="code-label">javascript — timers</div>
+      <pre><span class="cmt">// setTimeout — run once after a delay (in ms)</span>
+<span class="kw">const</span> <span class="prop">timeoutId</span> = <span class="fn">setTimeout</span>(() => {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Runs once after 2 seconds"</span>);
+}, <span class="num">2000</span>);
+
+<span class="cmt">// Cancel it before it fires</span>
+<span class="fn">clearTimeout</span>(<span class="prop">timeoutId</span>);
+
+<span class="cmt">// setInterval — run repeatedly every N ms</span>
+<span class="kw">const</span> <span class="prop">intervalId</span> = <span class="fn">setInterval</span>(() => {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Runs every 1 second"</span>);
+}, <span class="num">1000</span>);
+
+<span class="cmt">// Stop the interval</span>
+<span class="fn">clearInterval</span>(<span class="prop">intervalId</span>);
+
+<span class="cmt">// Practical example: countdown timer</span>
+<span class="kw">let</span> <span class="prop">count</span> = <span class="num">10</span>;
+<span class="kw">const</span> <span class="prop">timer</span> = <span class="fn">setInterval</span>(() => {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">count</span>--);
+  <span class="kw">if</span> (<span class="prop">count</span> < <span class="num">0</span>) <span class="fn">clearInterval</span>(<span class="prop">timer</span>);     <span class="cmt">// stop at 0</span>
+}, <span class="num">1000</span>);</pre>
+    </div>
+  </section>
+
+  <!-- ══ 36 ══ -->
+  <section id="hotqs">
+    <div class="section-tag tag-red">36 — Interview Questions</div>
+    <h2>Hot Interview Questions</h2>
+    <p class="section-intro">The most commonly asked JavaScript interview questions — review before every interview.</p>
+
+    <div class="card">
+      <div class="card-title">Q: What is the difference between == and ===?</div>
+      <ul class="notes">
+        <li><strong>==</strong> (loose equality): compares values with type coercion — <code>0 == false</code> is <code>true</code></li>
+        <li><strong>===</strong> (strict equality): compares values AND types — <code>0 === false</code> is <code>false</code></li>
+        <li>Always use <code>===</code> in production code to avoid subtle bugs</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Q: What is the difference between var, let, and const?</div>
+      <ul class="notes">
+        <li><strong>var</strong>: function-scoped, hoisted with <code>undefined</code>, can be re-declared — avoid in modern JS</li>
+        <li><strong>let</strong>: block-scoped, in TDZ until declaration, cannot re-declare</li>
+        <li><strong>const</strong>: block-scoped, cannot be reassigned — but objects/arrays can be mutated</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Q: What is a closure? Give a real use case.</div>
+      <ul class="notes">
+        <li>An inner function that remembers variables from its outer function even after the outer has finished</li>
+        <li>Use case: <strong>data privacy</strong> — creating private variables; <strong>memoization</strong>; <strong>event handlers</strong> retaining state</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Q: What is hoisting?</div>
+      <ul class="notes">
+        <li>JS moves declarations to the top of their scope during compilation (memory creation phase)</li>
+        <li><code>var</code> is hoisted and initialised as <code>undefined</code></li>
+        <li><code>let</code>/<code>const</code> are hoisted but NOT initialised (Temporal Dead Zone — accessing throws ReferenceError)</li>
+        <li>Function declarations are fully hoisted; function expressions are not</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Q: What is the event loop?</div>
+      <ul class="notes">
+        <li>Mechanism that makes JS non-blocking despite being single-threaded</li>
+        <li>Call stack → Web APIs (async) → Task Queue → Microtask Queue → Event Loop pushes to stack when empty</li>
+        <li>Microtasks (Promises) run before macrotasks (setTimeout)</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Q: What is the difference between Promise and async/await?</div>
+      <ul class="notes">
+        <li>Both handle async operations; async/await is syntactic sugar over Promises</li>
+        <li>Promises use <code>.then()/.catch()</code>; async/await uses <code>try/catch</code></li>
+        <li>async/await makes code look synchronous — easier to read and debug in complex flows</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Q: What is the difference between call(), apply(), and bind()?</div>
+      <ul class="notes">
+        <li>All three set the value of <code>this</code> for a function</li>
+        <li><strong>call()</strong>: invokes immediately; args passed one by one</li>
+        <li><strong>apply()</strong>: invokes immediately; args passed as array</li>
+        <li><strong>bind()</strong>: does NOT invoke; returns a new function with fixed <code>this</code></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Q: What is event bubbling and how do you stop it?</div>
+      <ul class="notes">
+        <li>Event bubbling: when an event on a child element also fires on all parent elements up the DOM tree</li>
+        <li>Stop with <code>event.stopPropagation()</code></li>
+        <li>Prevent default browser behaviour with <code>event.preventDefault()</code></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Q: What is the difference between map(), filter(), and reduce()?</div>
+      <ul class="notes">
+        <li><strong>map()</strong>: transforms each element → returns new array of same length</li>
+        <li><strong>filter()</strong>: keeps elements that pass a test → returns shorter new array</li>
+        <li><strong>reduce()</strong>: combines all elements into a single value (sum, count, group)</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Q: What is currying?</div>
+      <ul class="notes">
+        <li>Converting a multi-argument function into a sequence of single-argument functions</li>
+        <li><code>add(a)(b)</code> instead of <code>add(a, b)</code></li>
+        <li>Useful for partial application — pre-set some arguments and reuse the function</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Q: Is JavaScript single-threaded?</div>
+      <ul class="notes">
+        <li>Yes — JS has a single call stack; it executes one task at a time</li>
+        <li>But it appears concurrent using the event loop, Web APIs (browser handles timers/fetch), and task queues</li>
+        <li>Web Workers allow true parallelism but with no DOM access</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Q: What is the difference between localStorage and sessionStorage?</div>
+      <ul class="notes">
+        <li><strong>localStorage</strong>: data persists until manually deleted; shared across all tabs</li>
+        <li><strong>sessionStorage</strong>: data only lives for the current browser tab session; cleared when tab closes</li>
+      </ul>
+    </div>
+
+    <div class="highlight-box green">✅ Pro tip: In JS interviews, always mention <strong>real-world examples</strong>. For closures → "I used closures to create private counters." For Promises → "I used async/await with fetch to call REST APIs." Concrete examples make abstract answers memorable and show real experience.</div>
+  </section>
+
+</main>
+</div>
+
+<script>
+  const sections = document.querySelectorAll('section');
+  const links    = document.querySelectorAll('nav a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const id = e.target.getAttribute('id');
+        links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+      }
+    });
+  }, { threshold: 0.2 });
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
+
