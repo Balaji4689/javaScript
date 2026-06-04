@@ -1231,48 +1231,240 @@ multi-line`</span>;
     </table>
   </section>
 
-  <!-- ══ 23 ══ -->
-  <section id="event-loop">
-    <div class="section-tag tag-purple">23 — Event Loop</div>
-    <h2>Event Loop</h2>
-    <p class="section-intro">The mechanism that allows JavaScript to be non-blocking despite being single-threaded.</p>
+<!-- ══ 23 ══ -->
+<section id="event-loop">
+  <div class="section-tag tag-purple">23 — Event Loop</div>
+  <h2>Event Loop</h2>
+  <p class="section-intro">
+    The mechanism that allows JavaScript to be non-blocking despite being single-threaded.
+  </p>
+
+  <div class="flow">
+    <div class="flow-box">Call Stack</div><div class="flow-arrow">→</div>
+    <div class="flow-box">Web APIs</div><div class="flow-arrow">→</div>
+    <div class="flow-box">Microtask Queue</div><div class="flow-arrow">→</div>
+    <div class="flow-box">Task Queue</div><div class="flow-arrow">→</div>
+    <div class="flow-box">Event Loop</div><div class="flow-arrow">→</div>
+    <div class="flow-box">Call Stack</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">JavaScript Event Loop</div>
+
+    <p>
+      JavaScript is <strong>single-threaded</strong>, which means it can execute
+      only one task at a time.
+    </p>
+
+    <p>
+      To handle asynchronous operations like <code>setTimeout</code>,
+      <code>Promises</code>, <code>fetch</code>, and DOM events, JavaScript uses:
+    </p>
+
+    <ul class="notes">
+      <li><strong>Call Stack</strong></li>
+      <li><strong>Web APIs</strong></li>
+      <li><strong>Microtask Queue</strong></li>
+      <li><strong>Task Queue (Macrotask Queue)</strong></li>
+      <li><strong>Event Loop</strong></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-title">1. Call Stack</div>
+
+    <p>
+      The Call Stack is where JavaScript executes synchronous code.
+      It follows the <strong>LIFO (Last In, First Out)</strong> principle.
+    </p>
+
+    <div class="code-wrap">
+      <div class="code-label">javascript — call stack example</div>
+      <pre><span class="kw">function</span> first() {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"First"</span>);
+}
+
+<span class="kw">function</span> second() {
+  first();
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Second"</span>);
+}
+
+second();</pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">2. Web APIs</div>
+
+    <p>
+      Some operations take time and are handled by the browser's Web APIs,
+      not by the JavaScript engine itself.
+    </p>
+
+    <ul class="notes">
+      <li><code>setTimeout()</code></li>
+      <li><code>setInterval()</code></li>
+      <li><code>fetch()</code></li>
+      <li><code>DOM Events</code></li>
+      <li><code>Geolocation</code></li>
+    </ul>
+
+    <p>
+      JavaScript sends these tasks to the browser and continues executing
+      the remaining code.
+    </p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">3. Task Queue (Macrotask Queue)</div>
+
+    <p>
+      When an asynchronous operation finishes, its callback is placed in
+      the Task Queue.
+    </p>
+
+    <p><strong>Examples:</strong></p>
+
+    <ul class="notes">
+      <li><code>setTimeout()</code></li>
+      <li><code>setInterval()</code></li>
+      <li><code>DOM Events</code></li>
+    </ul>
+
+    <div class="code-wrap">
+      <div class="code-label">javascript — task queue example</div>
+      <pre><span class="fn">setTimeout</span>(() => {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Task Queue"</span>);
+}, <span class="num">0</span>);</pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">4. Microtask Queue</div>
+
+    <p>
+      Microtasks have higher priority than the Task Queue.
+    </p>
+
+    <p><strong>Examples:</strong></p>
+
+    <ul class="notes">
+      <li><code>Promise.then()</code></li>
+      <li><code>Promise.catch()</code></li>
+      <li><code>Promise.finally()</code></li>
+      <li><code>queueMicrotask()</code></li>
+    </ul>
+
+    <div class="code-wrap">
+      <div class="code-label">javascript — microtask example</div>
+      <pre><span class="fn">Promise</span>.<span class="fn">resolve</span>()
+  .<span class="fn">then</span>(() => {
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Microtask"</span>);
+  });</pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">5. Event Loop</div>
+
+    <p>
+      The Event Loop continuously checks:
+    </p>
+
+    <ul class="notes">
+      <li>Is the Call Stack empty?</li>
+      <li>If yes, execute all Microtasks.</li>
+      <li>Then execute one Task from the Task Queue.</li>
+      <li>Repeat forever.</li>
+    </ul>
 
     <div class="flow">
-      <div class="flow-box">Call Stack</div><div class="flow-arrow">→</div>
-      <div class="flow-box">Web APIs</div><div class="flow-arrow">→</div>
-      <div class="flow-box">Task Queue</div><div class="flow-arrow">→</div>
-      <div class="flow-box">Event Loop checks stack</div><div class="flow-arrow">→</div>
-      <div class="flow-box">Push to Call Stack</div>
+      <div class="flow-box">Call Stack Empty?</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-box">Run All Microtasks</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-box">Run One Task</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-box">Repeat</div>
     </div>
+  </div>
 
-    <div class="card">
-      <div class="card-title">How it works</div>
-      <ul class="notes">
-        <li><strong>Call Stack</strong>: where synchronous code runs — LIFO (Last In, First Out)</li>
-        <li><strong>Web APIs</strong>: browser handles async tasks (setTimeout, fetch, event listeners) outside JS thread</li>
-        <li><strong>Callback Queue (Task Queue)</strong>: completed async callbacks wait here</li>
-        <li><strong>Microtask Queue</strong>: Promise callbacks (.then/.catch) go here — higher priority than task queue</li>
-        <li><strong>Event Loop</strong>: continuously checks if call stack is empty; if yes, pushes from microtask queue first, then task queue</li>
-      </ul>
-    </div>
+  <div class="card">
+    <div class="card-title">Event Loop Example (Step by Step)</div>
 
     <div class="code-wrap">
       <div class="code-label">javascript — event loop execution order</div>
-      <pre><span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"1 — synchronous"</span>);
+      <pre><span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Start"</span>);
 
-<span class="fn">setTimeout</span>(() => <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"2 — setTimeout"</span>), <span class="num">0</span>);
+<span class="fn">setTimeout</span>(() => {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Macro Task"</span>);
+}, <span class="num">0</span>);
 
-<span class="fn">Promise</span>.<span class="fn">resolve</span>().<span class="fn">then</span>(() => <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"3 — Promise"</span>));
+<span class="fn">Promise</span>.<span class="fn">resolve</span>().<span class="fn">then</span>(() => {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Micro Task"</span>);
+});
 
-<span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"4 — synchronous"</span>);
-
-<span class="cmt">// Output order:
-// 1 — synchronous
-// 4 — synchronous
-// 3 — Promise      (microtask queue runs before task queue)
-// 2 — setTimeout   (task queue)</span></pre>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"End"</span>);</pre>
     </div>
-  </section>
+
+    <h4>Step 1: Execute Synchronous Code</h4>
+    <p><code>console.log("Start")</code> prints immediately.</p>
+
+    <h4>Step 2: setTimeout()</h4>
+    <p>
+      JavaScript sends the timer to Web APIs.
+      After completion, its callback moves to the Task Queue.
+    </p>
+
+    <h4>Step 3: Promise</h4>
+    <p>
+      Promise callback is placed in the Microtask Queue.
+    </p>
+
+    <h4>Step 4: Continue Synchronous Code</h4>
+    <p><code>console.log("End")</code> prints immediately.</p>
+
+    <h4>Step 5: Event Loop Executes Microtasks</h4>
+    <p>
+      The Call Stack becomes empty, so the Event Loop executes all
+      Microtasks first.
+    </p>
+
+    <h4>Step 6: Event Loop Executes Macrotask</h4>
+    <p>
+      After the Microtask Queue is empty, the Event Loop executes
+      one task from the Task Queue.
+    </p>
+
+    <div class="code-wrap">
+      <div class="code-label">Output</div>
+      <pre>Start
+End
+Micro Task
+Macro Task</pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Interview Rule to Remember</div>
+
+    <div class="code-wrap">
+      <pre>Synchronous Code
+        ↓
+All Microtasks
+        ↓
+One Macrotask
+        ↓
+Repeat</pre>
+    </div>
+
+    <p>
+      JavaScript is single-threaded, and the Event Loop enables asynchronous
+      behavior by executing completed callbacks when the Call Stack becomes empty.
+      Microtasks always run before Macrotasks.
+    </p>
+  </div>
+</section>
 
   <!-- ══ 24 ══ -->
   <section id="arrays">
