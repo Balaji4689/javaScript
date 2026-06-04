@@ -1636,115 +1636,39 @@ Repeat</pre>
     </div>
   </section>
 
-<!-- ══ 29 ══ -->
-<section id="event-propagation">
-  <div class="section-tag tag-blue">29 — Event Propagation</div>
-
-  <h2>Event Bubbling &amp; Event Capturing</h2>
-
-  <p class="section-intro">
-    When an event happens in HTML (such as a button click), JavaScript decides
-    how the event travels through the DOM tree.
-  </p>
-
-  <div class="card">
-    <div class="card-title">Event Propagation Phases</div>
-
-    <ul class="notes">
-      <li><strong>Capturing Phase</strong> — Event travels from top to bottom.</li>
-      <li><strong>Target Phase</strong> — The actual element is clicked.</li>
-      <li><strong>Bubbling Phase</strong> — Event travels from bottom to top.</li>
-    </ul>
-
-    <p>If the button is clicked:</p>
-
-    <ul class="notes">
-      <li><strong>Capturing:</strong> Grandparent → Parent → Button</li>
-      <li><strong>Bubbling:</strong> Button → Parent → Grandparent</li>
-    </ul>
-  </div>
-
-  <div class="code-wrap">
-    <div class="code-label">html — DOM structure</div>
-
-    <pre>&lt;div id="grandparent"&gt;
-  &lt;div id="parent"&gt;
-    &lt;button id="child"&gt;Click Me&lt;/button&gt;
-  &lt;/div&gt;
-&lt;/div&gt;</pre>
-  </div>
-
-  <div class="code-wrap">
-    <div class="code-label">javascript — event bubbling (default)</div>
-
-    <pre><span class="prop">document</span>.<span class="fn">getElementById</span>(<span class="str">"grandparent"</span>)
-.<span class="fn">addEventListener</span>(<span class="str">"click"</span>, () => {
-  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"grandparent clicked"</span>);
-});
-
-<span class="prop">document</span>.<span class="fn">getElementById</span>(<span class="str">"parent"</span>)
-.<span class="fn">addEventListener</span>(<span class="str">"click"</span>, () => {
-  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"parent clicked"</span>);
-});
-
-<span class="prop">document</span>.<span class="fn">getElementById</span>(<span class="str">"child"</span>)
-.<span class="fn">addEventListener</span>(<span class="str">"click"</span>, () => {
-  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"button clicked"</span>);
-});
-
-<span class="cmt">// Output:</span>
-<span class="cmt">// button clicked</span>
-<span class="cmt">// parent clicked</span>
-<span class="cmt">// grandparent clicked</span></pre>
-  </div>
-
-  <div class="card">
-    <div class="card-title">Event Bubbling</div>
-
-    <p>
-      Event Bubbling means the event propagates from the target element
-      upward through its ancestors.
-    </p>
-  </div>
-
-  <div class="code-wrap">
-    <div class="code-label">javascript — event capturing</div>
-
-    <pre><span class="prop">document</span>.<span class="fn">getElementById</span>(<span class="str">"grandparent"</span>)
-.<span class="fn">addEventListener</span>(<span class="str">"click"</span>, () => {
-  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"grandparent clicked"</span>);
-}, <span class="kw">true</span>);
-
-<span class="prop">document</span>.<span class="fn">getElementById</span>(<span class="str">"parent"</span>)
-.<span class="fn">addEventListener</span>(<span class="str">"click"</span>, () => {
-  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"parent clicked"</span>);
-}, <span class="kw">true</span>);
-
-<span class="prop">document</span>.<span class="fn">getElementById</span>(<span class="str">"child"</span>)
-.<span class="fn">addEventListener</span>(<span class="str">"click"</span>, () => {
-  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"button clicked"</span>);
-}, <span class="kw">true</span>);
-
-<span class="cmt">// Output:</span>
-<span class="cmt">// grandparent clicked</span>
-<span class="cmt">// parent clicked</span>
-<span class="cmt">// button clicked</span></pre>
-  </div>
-
-  <div class="card">
-    <div class="card-title">Event Capturing</div>
-
-    <p>
-      Event Capturing means the event propagates from the outermost parent
-      down to the target element.
-    </p>
-
-    <ul class="notes">
-      <li><strong>false</strong> (default) → Event Bubbling</li>
-      <li><strong>true</strong> → Event Capturing</li>
-    </ul>
-  </div>
-</section>
+<!-- ══ 27 ══ --> 
+  <section id="event-loop"> 
+    <div class="section-tag tag-purple">23 — Event Loop</div> 
+    <h2>Event Loop</h2> 
+    <p class="section-intro">The mechanism that allows JavaScript to be non-blocking despite being single-threaded.</p> 
+    <div class="flow"> 
+      <div class="flow-box">Call Stack</div>
+      <div class="flow-arrow">→</div> 
+      <div class="flow-box">Web APIs</div>
+      <div class="flow-arrow">→</div> 
+      <div class="flow-box">Task Queue</div>
+      <div class="flow-arrow">→</div> 
+      <div class="flow-box">Event Loop checks stack</div>
+      <div class="flow-arrow">→</div> 
+      <div class="flow-box">Push to Call Stack</div> </div>
+       <div class="card"> 
+        <div class="card-title">How it works</div>
+         <ul class="notes"> 
+          <li><strong>Call Stack</strong>: where synchronous code runs — LIFO (Last In, First Out)</li> 
+          <li><strong>Web APIs</strong>: browser handles async tasks (setTimeout, fetch, event listeners) outside JS thread</li> 
+          <li><strong>Callback Queue (Task Queue)</strong>: completed async callbacks wait here</li> <li><strong>Microtask Queue</strong>: Promise callbacks (.then/.catch) go here — higher priority than task queue</li> 
+          <li><strong>Event Loop</strong>: continuously checks if call stack is empty; if yes, pushes from microtask queue first, then task queue</li> 
+        </ul> 
+      </div> 
+      <div class="code-wrap"> 
+        <div class="code-label">javascript — event loop execution order</div> 
+        <pre><span class="fn">console</span>.
+          <span class="fn">log</span>(<span class="str">"1 — synchronous"</span>); 
+          <span class="fn">setTimeout</span>(() => <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"2 — setTimeout"</span>), 
+          <span class="num">0</span>); <span class="fn">Promise</span>.
+          <span class="fn">resolve</span>().<span class="fn">then</span>(() => <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"3 — Promise"</span>)); <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"4 — synchronous"</span>); <span class="cmt">// Output order: // 1 — synchronous // 4 — synchronous // 3 — Promise (microtask queue runs before task queue) // 2 — setTimeout (task queue)</span></pre> 
+        </div> 
+      </section>
   <!-- ══ 29 ══ -->
   <section id="bubbling">
     <div class="section-tag tag-blue">29 — Bubbling &amp; Capturing</div>
