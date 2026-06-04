@@ -1231,49 +1231,157 @@ multi-line`</span>;
     </table>
   </section>
 
-  <!-- ══ 23 ══ -->
-  <section id="event-loop">
-    <div class="section-tag tag-purple">23 — Event Loop</div>
-    <h2>Event Loop</h2>
-    <p class="section-intro">The mechanism that allows JavaScript to be non-blocking despite being single-threaded.</p>
 
-    <div class="flow">
-      <div class="flow-box">Call Stack</div><div class="flow-arrow">→</div>
-      <div class="flow-box">Web APIs</div><div class="flow-arrow">→</div>
-      <div class="flow-box">Task Queue</div><div class="flow-arrow">→</div>
-      <div class="flow-box">Event Loop checks stack</div><div class="flow-arrow">→</div>
-      <div class="flow-box">Push to Call Stack</div>
+
+<!-- ══ 23 ══ -->
+<section id="event-loop">
+  <div class="section-tag tag-purple">23 — Event Loop</div>
+  <h2>JavaScript Event Loop</h2>
+
+  <p class="section-intro">
+    JavaScript is single-threaded, which means it can execute only one task at a time.
+    To handle asynchronous operations like setTimeout, Promise, API calls, etc.,
+    JavaScript uses the Event Loop mechanism.
+  </p>
+
+  <div class="flow">
+    <div class="flow-box">Call Stack</div><div class="flow-arrow">→</div>
+    <div class="flow-box">Web APIs</div><div class="flow-arrow">→</div>
+    <div class="flow-box">Microtask Queue</div><div class="flow-arrow">→</div>
+    <div class="flow-box">Task Queue</div><div class="flow-arrow">→</div>
+    <div class="flow-box">Event Loop</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Main Components</div>
+    <ul class="notes">
+      <li>
+        <strong>1. Call Stack</strong> – The Call Stack is where JavaScript executes code.
+      </li>
+
+      <li>
+        <strong>2. Web APIs</strong> – Some operations take time, such as:
+        <br>• setTimeout()
+        <br>• setInterval()
+        <br>• fetch()
+        <br>• DOM Events
+        <br>• Geolocation
+        These are handled by the browser's Web APIs, not by the JavaScript engine itself.
+      </li>
+
+      <li>
+        <strong>3. Task Queue (Macrotask Queue)</strong> – When an asynchronous operation finishes,
+        its callback is placed in the Task Queue.
+        Examples:
+        <br>• setTimeout()
+        <br>• setInterval()
+        <br>• DOM Events
+      </li>
+
+      <li>
+        <strong>4. Microtask Queue</strong> – Microtasks have higher priority than the Task Queue.
+        Examples:
+        <br>• Promise.then()
+        <br>• Promise.catch()
+        <br>• queueMicrotask()
+      </li>
+
+      <li>
+        <strong>5. Event Loop</strong> – The Event Loop continuously checks:
+        <br>• Is the Call Stack empty?
+        <br>• If yes, execute all Microtasks.
+        <br>• Then execute one Task from the Task Queue.
+        <br>• Repeat forever.
+      </li>
+    </ul>
+  </div>
+
+  <div class="code-wrap">
+    <div class="code-label">javascript — event loop example</div>
+    <pre><span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Start"</span>);
+
+<span class="fn">setTimeout</span>(() => {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Macro Task"</span>);
+}, <span class="num">0</span>);
+
+<span class="fn">Promise</span>.<span class="fn">resolve</span>().<span class="fn">then</span>(() => {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Micro Task"</span>);
+});
+
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"End"</span>);</pre>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Step-by-Step Execution</div>
+    <ul class="notes">
+      <li>
+        <strong>Step 1: Execute Synchronous Code</strong><br>
+        console.log("Start");<br>
+        Output → <strong>Start</strong>
+      </li>
+
+      <li>
+        <strong>Step 2: setTimeout()</strong><br>
+        JavaScript sends the timer to Web APIs.<br>
+        When completed, its callback is placed in the <strong>Task Queue</strong>.
+      </li>
+
+      <li>
+        <strong>Step 3: Promise</strong><br>
+        Promise callback is placed in the
+        <strong>Microtask Queue</strong>.
+      </li>
+
+      <li>
+        <strong>Step 4: Continue Normal Code</strong><br>
+        console.log("End");<br>
+        Output → <strong>End</strong>
+      </li>
+
+      <li>
+        <strong>Step 5: Event Loop Checks Queues</strong><br>
+        The Call Stack is now empty.<br>
+        Event Loop first executes all Microtasks.<br>
+        Output → <strong>Micro Task</strong>
+      </li>
+
+      <li>
+        <strong>Step 6: Execute Macrotask</strong><br>
+        Microtask Queue is empty.<br>
+        Event Loop executes the Task Queue callback.<br>
+        Output → <strong>Macro Task</strong>
+      </li>
+    </ul>
+  </div>
+
+  <div class="flow">
+    <div class="flow-box">
+      Start → End → Micro Task → Macro Task
     </div>
+  </div>
 
-    <div class="card">
-      <div class="card-title">How it works</div>
-      <ul class="notes">
-        <li><strong>Call Stack</strong>: where synchronous code runs — LIFO (Last In, First Out)</li>
-        <li><strong>Web APIs</strong>: browser handles async tasks (setTimeout, fetch, event listeners) outside JS thread</li>
-        <li><strong>Callback Queue (Task Queue)</strong>: completed async callbacks wait here</li>
-        <li><strong>Microtask Queue</strong>: Promise callbacks (.then/.catch) go here — higher priority than task queue</li>
-        <li><strong>Event Loop</strong>: continuously checks if call stack is empty; if yes, pushes from microtask queue first, then task queue</li>
-      </ul>
-    </div>
-
-    <div class="code-wrap">
-      <div class="code-label">javascript — event loop execution order</div>
-      <pre><span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"1 — synchronous"</span>);
-
-<span class="fn">setTimeout</span>(() => <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"2 — setTimeout"</span>), <span class="num">0</span>);
-
-<span class="fn">Promise</span>.<span class="fn">resolve</span>().<span class="fn">then</span>(() => <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"3 — Promise"</span>));
-
-<span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"4 — synchronous"</span>);
-
-<span class="cmt">// Output order:
-// 1 — synchronous
-// 4 — synchronous
-// 3 — Promise      (microtask queue runs before task queue)
-// 2 — setTimeout   (task queue)</span></pre>
-    </div>
-  </section>
-
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>Queue Type</th>
+        <th>Examples</th>
+        <th>Priority</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Microtask Queue</td>
+        <td>Promise.then(), Promise.catch()</td>
+        <td>Higher</td>
+      </tr>
+      <tr>
+        <td>Task Queue (Macrotask)</td>
+        <td>setTimeout(), setInterval(), DOM Events</td>
+        <td>Lower</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
   <!-- ══ 24 ══ -->
   <section id="arrays">
     <div class="section-tag tag-green">24 — Array Methods</div>
@@ -1444,87 +1552,318 @@ multi-line`</span>;
     </div>
   </section>
 
-  <!-- ══ 28 ══ -->
-  <section id="events">
-    <div class="section-tag tag-blue">28 — Events</div>
-    <h2>Events &amp; Event Handling</h2>
-    <p class="section-intro">Events are actions or occurrences in the browser — clicking, typing, hovering, submitting forms, etc.</p>
+ <!-- ══ 28 ══ -->
+<section id="events">
+  <div class="section-tag tag-blue">28 — Events</div>
+  <h2>Events &amp; Event Handling</h2>
 
-    <div class="code-wrap">
-      <div class="code-label">javascript — event listeners</div>
-      <pre><span class="kw">const</span> <span class="prop">btn</span> = <span class="prop">document</span>.<span class="fn">getElementById</span>(<span class="str">"myBtn"</span>);
+  <p class="section-intro">
+    An Event is something that happens in the browser. JavaScript can listen for these events and run code when they happen.
+  </p>
 
-<span class="cmt">// addEventListener — preferred method</span>
-<span class="prop">btn</span>.<span class="fn">addEventListener</span>(<span class="str">"click"</span>, (<span class="prop">event</span>) => {
-  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Button clicked!"</span>);
-  <span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">event</span>.<span class="prop">target</span>);     <span class="cmt">// the element that was clicked</span>
-  <span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">event</span>.<span class="prop">type</span>);       <span class="cmt">// "click"</span>
-});
+  <div class="card">
+    <div class="card-title">Common Examples of Events</div>
+    <ul class="notes">
+      <li>Clicking a button 🖱️</li>
+      <li>Typing in an input field ⌨️</li>
+      <li>Submitting a form 📋</li>
+      <li>Moving the mouse over an element 🎯</li>
+      <li>Loading a webpage 🌐</li>
+    </ul>
+  </div>
 
-<span class="cmt">// Common event types</span>
-<span class="prop">el</span>.<span class="fn">addEventListener</span>(<span class="str">"click"</span>, <span class="prop">handler</span>);       <span class="cmt">// mouse click</span>
-<span class="prop">el</span>.<span class="fn">addEventListener</span>(<span class="str">"dblclick"</span>, <span class="prop">handler</span>);    <span class="cmt">// double click</span>
-<span class="prop">el</span>.<span class="fn">addEventListener</span>(<span class="str">"mouseover"</span>, <span class="prop">handler</span>);   <span class="cmt">// hover enter</span>
-<span class="prop">el</span>.<span class="fn">addEventListener</span>(<span class="str">"mouseout"</span>, <span class="prop">handler</span>);    <span class="cmt">// hover leave</span>
-<span class="prop">el</span>.<span class="fn">addEventListener</span>(<span class="str">"keydown"</span>, <span class="prop">handler</span>);     <span class="cmt">// key pressed</span>
-<span class="prop">el</span>.<span class="fn">addEventListener</span>(<span class="str">"keyup"</span>, <span class="prop">handler</span>);       <span class="cmt">// key released</span>
-<span class="prop">el</span>.<span class="fn">addEventListener</span>(<span class="str">"submit"</span>, <span class="prop">handler</span>);      <span class="cmt">// form submitted</span>
-<span class="prop">el</span>.<span class="fn">addEventListener</span>(<span class="str">"change"</span>, <span class="prop">handler</span>);      <span class="cmt">// input changed</span>
-<span class="prop">el</span>.<span class="fn">addEventListener</span>(<span class="str">"input"</span>, <span class="prop">handler</span>);       <span class="cmt">// input typing</span>
-<span class="prop">window</span>.<span class="fn">addEventListener</span>(<span class="str">"load"</span>, <span class="prop">handler</span>);    <span class="cmt">// page loaded</span>
-<span class="prop">window</span>.<span class="fn">addEventListener</span>(<span class="str">"resize"</span>, <span class="prop">handler</span>);  <span class="cmt">// window resized</span>
+  <h3>1. Button Click Example</h3>
 
-<span class="cmt">// Prevent default behaviour (e.g. form submission, link navigation)</span>
+  <div class="code-wrap">
+    <div class="code-label">HTML</div>
+    <pre>&lt;button id="myBtn"&gt;Click Me&lt;/button&gt;</pre>
+  </div>
+
+  <div class="code-wrap">
+    <div class="code-label">JavaScript</div>
+    <pre><span class="kw">const</span> <span class="prop">btn</span> = <span class="prop">document</span>.<span class="fn">getElementById</span>(<span class="str">"myBtn"</span>);
+
+<span class="prop">btn</span>.<span class="fn">addEventListener</span>(<span class="str">"click"</span>, () => {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Button Clicked!"</span>);
+});</pre>
+  </div>
+
+  <p><strong>What happens?</strong></p>
+
+  <ul class="notes">
+    <li>User clicks the button.</li>
+    <li><code>click</code> event occurs.</li>
+    <li>JavaScript runs the function.</li>
+    <li>Console shows: <strong>Button Clicked!</strong></li>
+  </ul>
+
+  <h3>2. Event Object (event or e)</h3>
+
+  <p>
+    When an event happens, JavaScript provides information about it through an Event Object.
+  </p>
+
+  <div class="code-wrap">
+    <div class="code-label">javascript — event object</div>
+    <pre><span class="prop">btn</span>.<span class="fn">addEventListener</span>(<span class="str">"click"</span>, (<span class="prop">e</span>) => {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">e</span>);
+});</pre>
+  </div>
+
+  <div class="code-wrap">
+    <div class="code-label">Useful Properties</div>
+    <pre><span class="prop">btn</span>.<span class="fn">addEventListener</span>(<span class="str">"click"</span>, (<span class="prop">e</span>) => {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">e</span>.<span class="prop">target</span>);
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">e</span>.<span class="prop">type</span>);
+});</pre>
+  </div>
+
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>e.target</code></td>
+        <td>Element that triggered the event</td>
+      </tr>
+      <tr>
+        <td><code>e.type</code></td>
+        <td>Type of event</td>
+      </tr>
+      <tr>
+        <td><code>e.preventDefault()</code></td>
+        <td>Stops default browser action</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>3. Input Event</h3>
+
+  <div class="code-wrap">
+    <div class="code-label">HTML + JavaScript</div>
+    <pre>&lt;input type="text" id="name"&gt;
+
+<span class="kw">const</span> <span class="prop">input</span> = <span class="prop">document</span>.<span class="fn">getElementById</span>(<span class="str">"name"</span>);
+
+<span class="prop">input</span>.<span class="fn">addEventListener</span>(<span class="str">"input"</span>, (<span class="prop">e</span>) => {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">e</span>.<span class="prop">target</span>.<span class="prop">value</span>);
+});</pre>
+  </div>
+
+  <div class="flow">
+    <div class="flow-box">
+      B → Ba → Bal → Bala → Balaji
+    </div>
+  </div>
+
+  <h3>4. Mouse Over Event</h3>
+
+  <div class="code-wrap">
+    <div class="code-label">javascript — mouseover</div>
+    <pre><span class="prop">btn</span>.<span class="fn">addEventListener</span>(<span class="str">"mouseover"</span>, () => {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Mouse entered button"</span>);
+});</pre>
+  </div>
+
+  <p><strong>Output:</strong> Mouse entered button</p>
+
+  <h3>5. Key Press Event</h3>
+
+  <div class="code-wrap">
+    <div class="code-label">javascript — keydown</div>
+    <pre><span class="prop">document</span>.<span class="fn">addEventListener</span>(<span class="str">"keydown"</span>, (<span class="prop">e</span>) => {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Key Pressed:"</span>, <span class="prop">e</span>.<span class="prop">key</span>);
+});</pre>
+  </div>
+
+  <p><strong>Examples:</strong></p>
+
+  <ul class="notes">
+    <li>Press A → <strong>Key Pressed: a</strong></li>
+    <li>Press Enter → <strong>Key Pressed: Enter</strong></li>
+  </ul>
+
+  <h3>6. Form Submit Event</h3>
+
+  <div class="code-wrap">
+    <div class="code-label">HTML</div>
+    <pre>&lt;form id="myForm"&gt;
+  &lt;input type="text"&gt;
+  &lt;button&gt;Submit&lt;/button&gt;
+&lt;/form&gt;</pre>
+  </div>
+
+  <div class="code-wrap">
+    <div class="code-label">JavaScript</div>
+    <pre><span class="kw">const</span> <span class="prop">form</span> = <span class="prop">document</span>.<span class="fn">getElementById</span>(<span class="str">"myForm"</span>);
+
 <span class="prop">form</span>.<span class="fn">addEventListener</span>(<span class="str">"submit"</span>, (<span class="prop">e</span>) => {
-  <span class="prop">e</span>.<span class="fn">preventDefault</span>();                       <span class="cmt">// stop page reload</span>
+  <span class="prop">e</span>.<span class="fn">preventDefault</span>();
+
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Form Submitted"</span>);
 });</pre>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Why preventDefault()?</div>
+    <ul class="notes">
+      <li>Normally: Click Submit → Page Reloads</li>
+      <li>With <code>preventDefault()</code>: Click Submit → No Reload → Run JavaScript</li>
+    </ul>
+  </div>
+
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>Event</th>
+        <th>When it Happens</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>click</td><td>User clicks</td></tr>
+      <tr><td>dblclick</td><td>Double click</td></tr>
+      <tr><td>mouseover</td><td>Mouse enters</td></tr>
+      <tr><td>mouseout</td><td>Mouse leaves</td></tr>
+      <tr><td>keydown</td><td>Key pressed</td></tr>
+      <tr><td>keyup</td><td>Key released</td></tr>
+      <tr><td>input</td><td>Typing in input</td></tr>
+      <tr><td>change</td><td>Input value changed</td></tr>
+      <tr><td>submit</td><td>Form submitted</td></tr>
+      <tr><td>load</td><td>Page loaded</td></tr>
+      <tr><td>resize</td><td>Window resized</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ══ 29 ══ -->
+<section id="bubbling">
+  <div class="section-tag tag-blue">29 — Bubbling &amp; Capturing</div>
+  <h2>Event Bubbling &amp; Capturing</h2>
+
+  <p class="section-intro">
+    When an event happens in HTML (like a button click), JavaScript decides how the event travels through elements in the DOM tree.
+  </p>
+
+  <p>
+    There are <strong>3 phases of Event Propagation:</strong>
+  </p>
+
+  <ul class="feature-list">
+    <strong>1.Capturing Phase</strong> (Top → Bottom) <br/>
+    <strong>2.Target Phase</strong> (Actual element clicked)<br/>
+    <strong>3.Bubbling Phase</strong> (Bottom → Top)<br/>
+  </ul>
+
+  <div class="code-wrap">
+    <div class="code-label">HTML Structure</div>
+    <pre>
+&lt;div id="grandparent"&gt;
+    &lt;div id="parent"&gt;
+        &lt;button id="child"&gt;Click Me&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+    </pre>
+  </div>
+
+  <p>
+    If we click the button, the event can travel in two ways:
+  </p>
+
+  <div class="flow">
+    <div class="flow-box">
+      Capturing → Grandparent → Parent → Button
     </div>
-  </section>
+  </div>
 
-  <!-- ══ 29 ══ -->
-  <section id="bubbling">
-    <div class="section-tag tag-blue">29 — Bubbling &amp; Capturing</div>
-    <h2>Event Bubbling &amp; Capturing</h2>
-    <p class="section-intro">When an event occurs, it travels through the DOM in two phases — capturing (down) and bubbling (up).</p>
-
-    <div class="flow">
-      <div class="flow-box">Capturing: Window → Document → Body → Parent → Child</div>
+  <div class="flow">
+    <div class="flow-box">
+      Bubbling → Button → Parent → Grandparent
     </div>
-    <div class="flow">
-      <div class="flow-box">Bubbling: Child → Parent → Body → Document → Window</div>
-    </div>
+  </div>
 
-    <div class="code-wrap">
-      <div class="code-label">javascript — bubbling vs capturing</div>
-      <pre><span class="cmt">// Default (bubbling) — false = event moves up from child to parent</span>
-<span class="prop">document</span>.<span class="fn">getElementById</span>(<span class="str">"child"</span>).<span class="fn">addEventListener</span>(<span class="str">"click"</span>, () => {
-  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Child clicked"</span>);
-});                                          <span class="cmt">// 3rd param: false (default)</span>
+  <h3>Bubbling</h3>
 
-<span class="prop">document</span>.<span class="fn">getElementById</span>(<span class="str">"parent"</span>).<span class="fn">addEventListener</span>(<span class="str">"click"</span>, () => {
-  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Parent also fires"</span>);        <span class="cmt">// bubbles up to parent</span>
+  <p>
+    <strong>Event Bubbling</strong> means the event moves from
+    <strong>child → parent</strong>.
+  </p>
+
+  <div class="code-wrap">
+    <div class="code-label">javascript — Event Bubbling</div>
+    <pre><span class="prop">document</span>.<span class="fn">getElementById</span>(<span class="str">"grandparent"</span>).<span class="fn">addEventListener</span>(<span class="str">"click"</span>, () => {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"grandparent clicked"</span>);
 });
 
-<span class="cmt">// Capturing — true = fires from parent DOWN to child</span>
 <span class="prop">document</span>.<span class="fn">getElementById</span>(<span class="str">"parent"</span>).<span class="fn">addEventListener</span>(<span class="str">"click"</span>, () => {
-  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Parent fires FIRST"</span>);
-}, <span class="kw">true</span>);                                   <span class="cmt">// 3rd param: true = capturing</span>
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"parent clicked"</span>);
+});
 
-<span class="cmt">// Stop event from bubbling up</span>
-<span class="prop">child</span>.<span class="fn">addEventListener</span>(<span class="str">"click"</span>, (<span class="prop">e</span>) => {
-  <span class="prop">e</span>.<span class="fn">stopPropagation</span>();                      <span class="cmt">// stops bubbling</span>
+<span class="prop">document</span>.<span class="fn">getElementById</span>(<span class="str">"child"</span>).<span class="fn">addEventListener</span>(<span class="str">"click"</span>, () => {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"button clicked"</span>);
 });</pre>
-    </div>
+  </div>
 
-    <table class="compare-table">
-      <thead><tr><th>Feature</th><th>Bubbling</th><th>Capturing</th></tr></thead>
-      <tbody>
-        <tr><td>Direction</td><td>Bottom → Top (child to parent)</td><td>Top → Bottom (parent to child)</td></tr>
-        <tr><td>3rd param</td><td><code>false</code> (default)</td><td><code>true</code></td></tr>
-        <tr><td>More common</td><td>Yes — most events use bubbling</td><td>Rarely used</td></tr>
-      </tbody>
-    </table>
-  </section>
+  <p><strong>Output when button is clicked:</strong></p>
+
+  <div class="flow">
+    <div class="flow-box">
+      button clicked → parent clicked → grandparent clicked
+    </div>
+  </div>
+
+  <h3>Capturing</h3>
+
+  <p>
+    <strong>Event Capturing</strong> means the event moves from
+    <strong>parent → child</strong>.
+  </p>
+
+  <div class="code-wrap">
+    <div class="code-label">javascript — Event Capturing</div>
+    <pre><span class="prop">document</span>.<span class="fn">getElementById</span>(<span class="str">"grandparent"</span>).<span class="fn">addEventListener</span>(<span class="str">"click"</span>, () => {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"grandparent clicked"</span>);
+}, <span class="kw">true</span>);
+
+<span class="prop">document</span>.<span class="fn">getElementById</span>(<span class="str">"parent"</span>).<span class="fn">addEventListener</span>(<span class="str">"click"</span>, () => {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"parent clicked"</span>);
+}, <span class="kw">true</span>);
+
+<span class="prop">document</span>.<span class="fn">getElementById</span>(<span class="str">"child"</span>).<span class="fn">addEventListener</span>(<span class="str">"click"</span>, () => {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"button clicked"</span>);
+});</pre>
+  </div>
+
+  <p><strong>Output when button is clicked:</strong></p>
+
+  <div class="flow">
+    <div class="flow-box">
+      grandparent clicked → parent clicked → button clicked
+    </div>
+  </div>
+
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>Value</th>
+        <th>Behavior</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>false</code> (default)</td>
+        <td>Event Bubbling (Child → Parent)</td>
+      </tr>
+      <tr>
+        <td><code>true</code></td>
+        <td>Event Capturing (Parent → Child)</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
 
   <!-- ══ 30 ══ -->
   <section id="bom">
