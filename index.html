@@ -1637,9 +1637,51 @@ Repeat</pre>
   </section>
 
 
-  <!-- ══ 28 ══ --> <section id="events"> <div class="section-tag tag-blue">28 — Events</div> <h2>Events &amp; Event Handling</h2> <p class="section-intro">Events are actions or occurrences in the browser — clicking, typing, hovering, submitting forms, etc.</p> <div class="code-wrap"> <div class="code-label">javascript — event listeners</div> <pre><span class="kw">const</span> <span class="prop">btn</span> = <span class="prop">document</span>.<span class="fn">getElementById</span>(<span class="str">"myBtn"</span>); <span class="cmt">// addEventListener — preferred method</span> <span class="prop">btn</span>.<span class="fn">addEventListener</span>(<span class="str">"click"</span>, (<span class="prop">event</span>) => { <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Button clicked!"</span>); <span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">event</span>.<span class="prop">target</span>); <span class="cmt">// the element that was clicked</span> <span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">event</span>.<span class="prop">type</span>); <span class="cmt">// "click"</span> }); <span class="cmt">// Common event types</span> <span class="prop">el</span>.<span class="fn">addEventListener</span>(<span class="str">"click"</span>, <span class="prop">handler</span>); <span class="cmt">// mouse click</span> <span class="prop">el</span>.<span class="fn">addEventListener</span>(<span class="str">"dblclick"</span>, <span class="prop">handler</span>); <span class="cmt">// double click</span> <span class="prop">el</span>.<span class="fn">addEventListener</span>(<span class="str">"mouseover"</span>, <span class="prop">handler</span>); <span class="cmt">// hover enter</span> <span class="prop">el</span>.<span class="fn">addEventListener</span>(<span class="str">"mouseout"</span>, <span class="prop">handler</span>); <span class="cmt">// hover leave</span> <span class="prop">el</span>.<span class="fn">addEventListener</span>(<span class="str">"keydown"</span>, <span class="prop">handler</span>); <span class="cmt">// key pressed</span> <span class="prop">el</span>.<span class="fn">addEventListener</span>(<span class="str">"keyup"</span>, <span class="prop">handler</span>); <span class="cmt">// key released</span> <span class="prop">el</span>.<span class="fn">addEventListener</span>(<span class="str">"submit"</span>, <span class="prop">handler</span>); <span class="cmt">// form submitted</span> <span class="prop">el</span>.<span class="fn">addEventListener</span>(<span class="str">"change"</span>, <span class="prop">handler</span>); <span class="cmt">// input changed</span> <span class="prop">el</span>.<span class="fn">addEventListener</span>(<span class="str">"input"</span>, <span class="prop">handler</span>); <span class="cmt">// input typing</span> <span class="prop">window</span>.<span class="fn">addEventListener</span>(<span class="str">"load"</span>, <span class="prop">handler</span>); <span class="cmt">// page loaded</span> <span class="prop">window</span>.<span class="fn">addEventListener</span>(<span class="str">"resize"</span>, <span class="prop">handler</span>); <span class="cmt">// window resized</span> <span class="cmt">// Prevent default behaviour (e.g. form submission, link navigation)</span> <span class="prop">form</span>.<span class="fn">addEventListener</span>(<span class="str">"submit"</span>, (<span class="prop">e</span>) => { <span class="prop">e</span>.<span class="fn">preventDefault</span>(); <span class="cmt">// stop page reload</span> });</pre> </div> </section>
+<!-- ══ 28 ══ -->
+<section id="events">
 
+  <div class="section-tag tag-blue">28 — Events</div>
 
+  <h2>Events &amp; Event Handling</h2>
+
+  <p class="section-intro">
+    Events are actions or occurrences in the browser — clicking, typing,
+    hovering, submitting forms, etc.
+  </p>
+
+  <div class="code-wrap">
+
+    <div class="code-label">
+      javascript — event listeners
+    </div>
+
+    <pre>
+<span class="kw">const</span> <span class="prop">btn</span> =
+<span class="prop">document</span>.<span class="fn">getElementById</span>(<span class="str">"myBtn"</span>);
+
+<span class="cmt">// addEventListener — preferred method</span>
+
+<span class="prop">btn</span>.<span class="fn">addEventListener</span>(
+  <span class="str">"click"</span>,
+  (<span class="prop">event</span>) => {
+
+    <span class="fn">console</span>.<span class="fn">log</span>(
+      <span class="str">"Button clicked!"</span>
+    );
+
+    <span class="fn">console</span>.<span class="fn">log</span>(
+      <span class="prop">event</span>.<span class="prop">target</span>
+    );
+
+    <span class="fn">console</span>.<span class="fn">log</span>(
+      <span class="prop">event</span>.<span class="prop">type</span>
+    );
+});
+    </pre>
+
+  </div>
+
+</section>
   <!-- ══ 29 ══ -->
   <section id="bubbling">
     <div class="section-tag tag-blue">29 — Bubbling &amp; Capturing</div>
