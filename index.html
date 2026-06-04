@@ -1636,42 +1636,143 @@ Repeat</pre>
     </div>
   </section>
 
-  <!-- ══ 28 ══ -->
-  <section id="events">
-    <div class="section-tag tag-blue">28 — Events</div>
-    <h2>Events &amp; Event Handling</h2>
-    <p class="section-intro">Events are actions or occurrences in the browser — clicking, typing, hovering, submitting forms, etc.</p>
+<div class="card">
+  <div class="card-title">Event Bubbling & Event Capturing</div>
 
-    <div class="code-wrap">
-      <div class="code-label">javascript — event listeners</div>
-      <pre><span class="kw">const</span> <span class="prop">btn</span> = <span class="prop">document</span>.<span class="fn">getElementById</span>(<span class="str">"myBtn"</span>);
+  <p>
+    When an event happens in HTML (such as a button click), JavaScript decides
+    how the event travels through the DOM tree.
+  </p>
 
-<span class="cmt">// addEventListener — preferred method</span>
-<span class="prop">btn</span>.<span class="fn">addEventListener</span>(<span class="str">"click"</span>, (<span class="prop">event</span>) => {
-  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Button clicked!"</span>);
-  <span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">event</span>.<span class="prop">target</span>);     <span class="cmt">// the element that was clicked</span>
-  <span class="fn">console</span>.<span class="fn">log</span>(<span class="prop">event</span>.<span class="prop">type</span>);       <span class="cmt">// "click"</span>
+  <p><strong>There are 3 phases of event propagation:</strong></p>
+
+  <ul class="notes">
+    <li><strong>Capturing Phase</strong> → Top to Bottom</li>
+    <li><strong>Target Phase</strong> → Actual element clicked</li>
+    <li><strong>Bubbling Phase</strong> → Bottom to Top</li>
+  </ul>
+
+  <div class="code-wrap">
+    <div class="code-label">html — DOM structure</div>
+    <pre>&lt;div id="grandparent"&gt;
+  &lt;div id="parent"&gt;
+    &lt;button id="child"&gt;Click Me&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+  </div>
+
+  <p>If the button is clicked, the event can travel in two ways:</p>
+
+  <ul class="notes">
+    <li><strong>Capturing:</strong> Grandparent → Parent → Button</li>
+    <li><strong>Bubbling:</strong> Button → Parent → Grandparent</li>
+  </ul>
+</div>
+
+<div class="card">
+  <div class="card-title">Event Bubbling (Default)</div>
+
+  <p>
+    Event Bubbling means the event travels from the child element to its parent
+    elements.
+  </p>
+
+  <div class="code-wrap">
+    <div class="code-label">javascript — event bubbling</div>
+    <pre><span class="prop">document</span>.<span class="fn">getElementById</span>(<span class="str">"grandparent"</span>)
+  .<span class="fn">addEventListener</span>(<span class="str">"click"</span>, () => {
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Grandparent Clicked"</span>);
 });
 
-<span class="cmt">// Common event types</span>
-<span class="prop">el</span>.<span class="fn">addEventListener</span>(<span class="str">"click"</span>, <span class="prop">handler</span>);       <span class="cmt">// mouse click</span>
-<span class="prop">el</span>.<span class="fn">addEventListener</span>(<span class="str">"dblclick"</span>, <span class="prop">handler</span>);    <span class="cmt">// double click</span>
-<span class="prop">el</span>.<span class="fn">addEventListener</span>(<span class="str">"mouseover"</span>, <span class="prop">handler</span>);   <span class="cmt">// hover enter</span>
-<span class="prop">el</span>.<span class="fn">addEventListener</span>(<span class="str">"mouseout"</span>, <span class="prop">handler</span>);    <span class="cmt">// hover leave</span>
-<span class="prop">el</span>.<span class="fn">addEventListener</span>(<span class="str">"keydown"</span>, <span class="prop">handler</span>);     <span class="cmt">// key pressed</span>
-<span class="prop">el</span>.<span class="fn">addEventListener</span>(<span class="str">"keyup"</span>, <span class="prop">handler</span>);       <span class="cmt">// key released</span>
-<span class="prop">el</span>.<span class="fn">addEventListener</span>(<span class="str">"submit"</span>, <span class="prop">handler</span>);      <span class="cmt">// form submitted</span>
-<span class="prop">el</span>.<span class="fn">addEventListener</span>(<span class="str">"change"</span>, <span class="prop">handler</span>);      <span class="cmt">// input changed</span>
-<span class="prop">el</span>.<span class="fn">addEventListener</span>(<span class="str">"input"</span>, <span class="prop">handler</span>);       <span class="cmt">// input typing</span>
-<span class="prop">window</span>.<span class="fn">addEventListener</span>(<span class="str">"load"</span>, <span class="prop">handler</span>);    <span class="cmt">// page loaded</span>
-<span class="prop">window</span>.<span class="fn">addEventListener</span>(<span class="str">"resize"</span>, <span class="prop">handler</span>);  <span class="cmt">// window resized</span>
+<span class="prop">document</span>.<span class="fn">getElementById</span>(<span class="str">"parent"</span>)
+  .<span class="fn">addEventListener</span>(<span class="str">"click"</span>, () => {
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Parent Clicked"</span>);
+});
 
-<span class="cmt">// Prevent default behaviour (e.g. form submission, link navigation)</span>
-<span class="prop">form</span>.<span class="fn">addEventListener</span>(<span class="str">"submit"</span>, (<span class="prop">e</span>) => {
-  <span class="prop">e</span>.<span class="fn">preventDefault</span>();                       <span class="cmt">// stop page reload</span>
+<span class="prop">document</span>.<span class="fn">getElementById</span>(<span class="str">"child"</span>)
+  .<span class="fn">addEventListener</span>(<span class="str">"click"</span>, () => {
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Button Clicked"</span>);
 });</pre>
-    </div>
-  </section>
+  </div>
+
+  <div class="code-wrap">
+    <div class="code-label">Output (Click Button)</div>
+    <pre>Button Clicked
+Parent Clicked
+Grandparent Clicked</pre>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title">Event Capturing</div>
+
+  <p>
+    Event Capturing means the event travels from parent to child before reaching
+    the target element.
+  </p>
+
+  <div class="code-wrap">
+    <div class="code-label">javascript — event capturing</div>
+    <pre><span class="prop">document</span>.<span class="fn">getElementById</span>(<span class="str">"grandparent"</span>)
+  .<span class="fn">addEventListener</span>(<span class="str">"click"</span>, () => {
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Grandparent Clicked"</span>);
+}, <span class="kw">true</span>);
+
+<span class="prop">document</span>.<span class="fn">getElementById</span>(<span class="str">"parent"</span>)
+  .<span class="fn">addEventListener</span>(<span class="str">"click"</span>, () => {
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Parent Clicked"</span>);
+}, <span class="kw">true</span>);
+
+<span class="prop">document</span>.<span class="fn">getElementById</span>(<span class="str">"child"</span>)
+  .<span class="fn">addEventListener</span>(<span class="str">"click"</span>, () => {
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Button Clicked"</span>);
+}, <span class="kw">true</span>);</pre>
+  </div>
+
+  <div class="code-wrap">
+    <div class="code-label">Output (Click Button)</div>
+    <pre>Grandparent Clicked
+Parent Clicked
+Button Clicked</pre>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title">addEventListener Third Parameter</div>
+
+  <div class="code-wrap">
+    <div class="code-label">javascript</div>
+    <pre>element.addEventListener(event, callback, useCapture);</pre>
+  </div>
+
+  <ul class="notes">
+    <li><strong>false</strong> (default) → Event Bubbling</li>
+    <li><strong>true</strong> → Event Capturing</li>
+  </ul>
+</div>
+
+<div class="card">
+  <div class="card-title">Quick Interview Answer</div>
+
+  <p>
+    <strong>Event Bubbling</strong> means an event propagates from the target
+    element upward to its ancestors.
+  </p>
+
+  <p>
+    <strong>Event Capturing</strong> means an event propagates from the root
+    element downward to the target element.
+  </p>
+
+  <div class="code-wrap">
+    <div class="code-label">Remember</div>
+    <pre>Capturing : Grandparent → Parent → Child
+
+Target    : Child
+
+Bubbling  : Child → Parent → Grandparent</pre>
+  </div>
+</div>
 
   <!-- ══ 29 ══ -->
   <section id="bubbling">
