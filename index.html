@@ -1101,12 +1101,12 @@ multi-line`</span>;
 
     <div class="code-wrap">
       <div class="code-label">javascript — callbacks and callback hell</div>
-      <pre><span class="cmt">// Simple callback</span>
+      <pre><span class="cmt">// Simple callback --> A callback function is a function that is passed as an argument to another function and is executed later.</span>
 <span class="fn">setTimeout</span>(() => {
   <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"This runs after 2 seconds"</span>);
 }, <span class="num">2000</span>);
 
-<span class="cmt">// Higher-Order Function — takes a function as argument</span>
+<span class="cmt">// Higher-Order Function — Takes another function as an argument</span>
 <span class="kw">const</span> <span class="fn">register</span> = (<span class="prop">callback</span>) => {
   <span class="fn">setTimeout</span>(() => {
     <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Registered!"</span>);
